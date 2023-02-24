@@ -1,6 +1,6 @@
 {
-  "domain": "google_assistant_sdk",
-  "name": "Google Assistant SDK",
+  "domain": "google_assistant_sdk_custom",
+  "name": "Google Assistant SDK Custom",
   "codeowners": ["@tronikos"],
   "config_flow": true,
   "dependencies": ["application_credentials", "http"],
