@@ -8,6 +8,7 @@ import uuid
 
 import aiohttp
 from aiohttp import web
+from bs4 import BeautifulSoup
 from gassist_text import TextAssistant
 from google.oauth2.credentials import Credentials
 
@@ -66,11 +67,11 @@ async def async_send_text_commands(
     credentials = Credentials(session.token[CONF_ACCESS_TOKEN])
     language_code = entry.options.get(CONF_LANGUAGE_CODE, default_language_code(hass))
     with TextAssistant(
-        credentials, language_code, audio_out=bool(media_players)
+        credentials, language_code, audio_out=bool(media_players), display=True
     ) as assistant:
         for command in commands:
             resp = assistant.assist(command)
-            text_response = resp[0]
+            text_response = parse_response(hass, command, resp)
             _LOGGER.debug("command: %s\nresponse: %s", command, text_response)
             audio_response = resp[2]
             if media_players and audio_response:
@@ -99,6 +100,21 @@ def default_language_code(hass: HomeAssistant):
     if language_code in SUPPORTED_LANGUAGE_CODES:
         return language_code
     return DEFAULT_LANGUAGE_CODES.get(hass.config.language, "en-US")
+
+
+def parse_response(hass: HomeAssistant, command: str, resp):
+    """Parses an HTML response from Google Assistant API Service and fires an event containing request and response."""
+    html = BeautifulSoup(resp[1], "html.parser")
+    card_content = html.find("div", id="assistant-card-content")
+    if card_content:
+        html = card_content
+    response = html.get_text(separator="\n", strip=True)
+    event_data = {
+        "request": command,
+        "response": response,
+    }
+    hass.bus.async_fire(DOMAIN + "_event", event_data)
+    return response
 
 
 class InMemoryStorage:

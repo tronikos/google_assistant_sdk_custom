@@ -30,6 +30,7 @@ from .helpers import (
     InMemoryStorage,
     async_send_text_commands,
     default_language_code,
+    parse_response,
 )
 
 SERVICE_SEND_TEXT_COMMAND = "send_text_command"
@@ -167,10 +168,10 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
             language_code = self.entry.options.get(
                 CONF_LANGUAGE_CODE, default_language_code(self.hass)
             )
-            self.assistant = TextAssistant(credentials, language_code)
+            self.assistant = TextAssistant(credentials, language_code, display=True)
 
         resp = self.assistant.assist(user_input.text)
-        text_response = resp[0] or "<empty response>"
+        text_response = parse_response(self.hass, user_input.text, resp)
 
         intent_response = intent.IntentResponse(language=user_input.language)
         intent_response.async_set_speech(text_response)
