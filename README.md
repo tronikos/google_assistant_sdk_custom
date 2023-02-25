@@ -41,6 +41,7 @@ Here a [Template Alarm Control Panel](https://www.home-assistant.io/integrations
 because Google Assistant doesn't allow disarming Nest Guard.
 
 Create a text [helper](http://homeassistant.local:8123/config/helpers) with:
+
 ```
 Name: Nest Guard Status
 Icon: mdi:shield-home
@@ -48,7 +49,8 @@ Entity ID: input_text.nest_guard_status
 ```
 
 Create [automation](http://homeassistant.local:8123/config/automation/dashboard):
-```
+
+```yaml
 alias: "Nest Guard: status"
 description: ""
 trigger:
@@ -86,37 +88,34 @@ max: 10
 Create following [scripts](http://homeassistant.local:8123/config/script/dashboard):
 
 ```yaml
-alias: "Nest Guard: Refresh"
-sequence:
+nest_guard_refresh:
+  alias: 'Nest Guard: Refresh'
+  sequence:
   - service: google_assistant_sdk.send_text_command
     data:
       command: what is the status of nest guard
-mode: single
-icon: mdi:shield-refresh
-```
-
-```yaml
-alias: "Nest Guard: Away"
-sequence:
+  mode: single
+  icon: mdi:shield-refresh
+nest_guard_away:
+  alias: 'Nest Guard: Away'
+  sequence:
   - service: google_assistant_sdk.send_text_command
     data:
       command: Set Nest Guard to away and guarding
   - service: script.nest_guard_refresh
     data: {}
-mode: single
-icon: mdi:shield-lock
-```
-
-```yaml
-alias: "Nest Guard: Home"
-sequence:
+  mode: single
+  icon: mdi:shield-lock
+nest_guard_home:
+  alias: 'Nest Guard: Home'
+  sequence:
   - service: google_assistant_sdk.send_text_command
     data:
       command: Set Nest Guard to home and guarding
   - service: script.nest_guard_refresh
     data: {}
-mode: single
-icon: mdi:shield-home
+  mode: single
+  icon: mdi:shield-home
 ```
 
 Add the following Entities card in the lovelace dashboard:
