@@ -12,6 +12,24 @@ In addition, because services calls currently don't return values (see [discussi
 the workaround is to fire events containing the command and response.
 See also rejected [PR](https://github.com/home-assistant/core/pull/84856).
 
+# Installation
+
+## HACS
+1. [Add](http://homeassistant.local:8123/hacs/integrations) custom integrations repository: https://github.com/tronikos/google_assistant_sdk_custom
+2. Select "Google Assistant SDK Custom" in the Integration tab and click download
+3. Restart Home Assistant
+4. Enable the integration
+
+## Manual
+1. Copy directory `custom_components/google_assistant_sdk_custom` to your `<config dir>/custom_components` directory
+2. Restart Home-Assistant
+3. Enable the integration
+
+## Enable the integration
+1. Go to [Settings / Devices & Services / Integrations](http://homeassistant.local:8123/config/integrations). Click **+ ADD INTEGRATION**
+2. Search for "Google Assistant SDK Custom" and click on it
+3. Restart Home Assistant
+
 # Examples
 
 ## Nest Guard
