@@ -1,3 +1,5 @@
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+
 # Google Assistant SDK Custom integration for Home Assistant
 This integration patches [Google Assistant SDK integration](https://www.home-assistant.io/integrations/google_assistant_sdk/) to allow getting responses from commands to Google Assistant.
 
