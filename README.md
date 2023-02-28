@@ -11,7 +11,7 @@ Because the core integrations are [not allowed](https://github.com/home-assistan
 this custom integration is needed.
 
 In addition, because services calls currently don't return values (see [discussion](https://github.com/home-assistant/architecture/discussions/777)),
-the workaround is to fire events of `event_type: google_assistant_sdk_event` containing the command and response.
+the workaround is to fire events of `event_type: google_assistant_sdk_custom_event` containing the command and response.
 See also rejected [PR](https://github.com/home-assistant/core/pull/84856).
 
 # Installation
@@ -60,7 +60,7 @@ trigger:
     minutes: "10"
     id: time
   - platform: event
-    event_type: google_assistant_sdk_event
+    event_type: google_assistant_sdk_custom_event
     event_data:
       request: what is the status of nest guard
     id: status

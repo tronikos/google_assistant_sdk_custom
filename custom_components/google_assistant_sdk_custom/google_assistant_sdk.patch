@@ -1,0 +1,66 @@
+diff --git a/homeassistant/components/google_assistant_sdk/__init__.py b/homeassistant/components/google_assistant_sdk/__init__.py
+index 93699321ed..22b2899404 100644
+--- a/homeassistant/components/google_assistant_sdk/__init__.py
++++ b/homeassistant/components/google_assistant_sdk/__init__.py
+@@ -2,2 +2,3 @@
+ from __future__ import annotations
++from .helpers2 import parse_response
+
+@@ -169,6 +170,6 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
+             )
+-            self.assistant = TextAssistant(credentials, language_code)
++            self.assistant = TextAssistant(credentials, language_code, display=True)
+
+         resp = self.assistant.assist(user_input.text)
+-        text_response = resp[0] or "<empty response>"
++        text_response = parse_response(self.hass, user_input.text, resp)
+
+diff --git a/homeassistant/components/google_assistant_sdk/helpers.py b/homeassistant/components/google_assistant_sdk/helpers.py
+index 1d89e208ce..34623fe08e 100644
+--- a/homeassistant/components/google_assistant_sdk/helpers.py
++++ b/homeassistant/components/google_assistant_sdk/helpers.py
+@@ -2,2 +2,3 @@
+ from __future__ import annotations
++from .helpers2 import parse_response
+
+@@ -68,7 +69,7 @@ async def async_send_text_commands(
+     with TextAssistant(
+-        credentials, language_code, audio_out=bool(media_players)
++        credentials, language_code, audio_out=bool(media_players), display=True
+     ) as assistant:
+         for command in commands:
+             resp = assistant.assist(command)
+-            text_response = resp[0]
++            text_response = parse_response(hass, command, resp)
+             _LOGGER.debug("command: %s\nresponse: %s", command, text_response)
+diff --git a/homeassistant/components/google_assistant_sdk/helpers2.py b/homeassistant/components/google_assistant_sdk/helpers2.py
+new file mode 100644
+index 0000000000..3c7dd57034
+--- /dev/null
++++ b/homeassistant/components/google_assistant_sdk/helpers2.py
+@@ -0,0 +1,25 @@
++"""Helper2 classes for Google Assistant SDK integration."""
++from bs4 import BeautifulSoup
++
++from homeassistant.core import HomeAssistant
++
++from .const import DOMAIN
++
++
++def parse_response(hass: HomeAssistant, command: str, resp):
++    """Parses a response from Google Assistant API Service and fires an event containing request and response."""
++
++    if resp[0]:
++        response = resp[0]
++    else:
++        html = BeautifulSoup(resp[1], "html.parser")
++        card_content = html.find("div", id="assistant-card-content")
++        if card_content:
++            html = card_content
++        response = html.get_text(separator="\n", strip=True)
++    event_data = {
++        "request": command,
++        "response": response,
++    }
++    hass.bus.async_fire(DOMAIN + "_custom_event", event_data)
++    return response
