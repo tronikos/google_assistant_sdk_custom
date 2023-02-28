@@ -1,5 +1,7 @@
 {
   "name": "Google Assistant SDK Custom",
   "homeassistant": "2023.2.0",
-  "render_readme": true
+  "render_readme": true,
+  "zip_release": true,
+  "filename": "google_assistant_sdk_custom.zip"
 }
