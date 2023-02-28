@@ -24,13 +24,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         return True
 
     _LOGGER.info("Applying patch")
-    if not run_command(f"{GIT_APPLY_CMD} -- {PATCH_FILE}"):
-        _LOGGER.error("Failed to apply patch :(")
-        return False
+    if run_command(f"{GIT_APPLY_CMD} -- {PATCH_FILE}"):
+        _LOGGER.warning("Patched, enjoy :)")
+        _LOGGER.warning("Restart Home Assistant to use the patch")
+        return True
 
-    _LOGGER.info("Patched, enjoy :)")
-    _LOGGER.info("Restart Home Assistant to use the patch")
-    return True
+    _LOGGER.error("Failed to apply patch :(")
+    return False
+
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
