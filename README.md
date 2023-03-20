@@ -141,3 +141,9 @@ footer:
       show_icon: true
       show_name: true
 ```
+
+## Other examples
+
+- [360 vacuum](https://community.home-assistant.io/t/360-s6-vacuum-robot/124990/29)
+- [robot mowers](https://github.com/tronikos/google_assistant_sdk_custom/issues/2#issuecomment-1473697969)
+
