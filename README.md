@@ -146,4 +146,4 @@ footer:
 
 - [360 vacuum](https://community.home-assistant.io/t/360-s6-vacuum-robot/124990/29)
 - [robot mowers](https://github.com/tronikos/google_assistant_sdk_custom/issues/2#issuecomment-1473697969)
-
+- [Hisense air conditioning](https://github.com/tronikos/google_assistant_sdk_custom/issues/3#issuecomment-1520227069)
