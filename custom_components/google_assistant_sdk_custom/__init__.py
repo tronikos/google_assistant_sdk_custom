@@ -7,8 +7,8 @@ import subprocess
 
 import homeassistant.components.google_assistant_sdk as google_assistant_sdk
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.start import async_at_start
+from homeassistant.core import HomeAssistant, DOMAIN as HA_DOMAIN
+from homeassistant.const import SERVICE_HOMEASSISTANT_RESTART
 
 _LOGGER = logging.getLogger(__name__)
 PATCH_FILE = os.path.dirname(os.path.realpath(__file__)) + "/google_assistant_sdk.patch"
@@ -26,12 +26,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     _LOGGER.info("Applying patch")
     if run_command(f"{GIT_APPLY_CMD} -- {PATCH_FILE}"):
         _LOGGER.warning("Patched, enjoy :)")
-        _LOGGER.warning("Restart Home Assistant to use the patch")
+        _LOGGER.warning("Restarting Home Assistant to use the patch")
+        await hass.services.async_call(HA_DOMAIN, SERVICE_HOMEASSISTANT_RESTART)
         return True
 
     _LOGGER.error("Failed to apply patch :(")
     return False
-
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

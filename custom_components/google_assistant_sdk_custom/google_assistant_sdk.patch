@@ -49,10 +49,10 @@ index 0000000000..3c7dd57034
 +
 +def parse_response(hass: HomeAssistant, command: str, resp):
 +    """Parses a response from Google Assistant API Service and fires an event containing request and response."""
-+
++    response = ""
 +    if resp[0]:
 +        response = resp[0]
-+    else:
++    elif resp[1]:
 +        html = BeautifulSoup(resp[1], "html.parser")
 +        card_content = html.find("div", id="assistant-card-content")
 +        if card_content:

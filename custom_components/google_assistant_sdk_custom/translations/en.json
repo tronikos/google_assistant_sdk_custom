@@ -5,7 +5,7 @@
         },
         "step": {
             "user": {
-                "description": "This will patch your existing Google Assistant SDK integration. You will need to restart Home Assistant for changes to take effect."
+                "description": "This will patch your existing Google Assistant SDK integration. Home Assistant will automatically restart for changes to take effect."
             }
         }
     }
