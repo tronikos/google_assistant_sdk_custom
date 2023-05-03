@@ -1,9 +1,9 @@
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 
 # Google Assistant SDK Custom integration for Home Assistant
 This integration patches [Google Assistant SDK integration](https://www.home-assistant.io/integrations/google_assistant_sdk/) to allow getting responses from commands to Google Assistant.
 
-Note: After a Home Assistant update the patch will be reapplied automatically but Home Assistant needs to be restarted manually.
+Note: After a Home Assistant update the patch will be reapplied automatically and Home Assistant will restart.
 
 ## Why aren't these changes in the core Google Assistant SDK integration?
 Due to a [bug](https://github.com/googlesamples/assistant-sdk-python/issues/391) in the Google Assistant API,
