@@ -1,29 +1,124 @@
 diff --git a/homeassistant/components/google_assistant_sdk/__init__.py b/homeassistant/components/google_assistant_sdk/__init__.py
-index 93699321ed..22b2899404 100644
+index db2a8d9512..0ec80935cb 100644
 --- a/homeassistant/components/google_assistant_sdk/__init__.py
 +++ b/homeassistant/components/google_assistant_sdk/__init__.py
-@@ -2,2 +2,3 @@
+@@ -1,14 +1,14 @@
+ """Support for Google Assistant SDK."""
  from __future__ import annotations
 +from .helpers2 import parse_response
-
-@@ -169,6 +170,6 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
-             )
--            self.assistant = TextAssistant(credentials, language_code)
-+            self.assistant = TextAssistant(credentials, language_code, display=True)
-
+ 
+ import aiohttp
+ from gassist_text import TextAssistant
+-from google.oauth2.credentials import Credentials
+ import voluptuous as vol
+ 
+ from homeassistant.components import conversation
+ from homeassistant.config_entries import ConfigEntry, ConfigEntryState
+-from homeassistant.const import CONF_ACCESS_TOKEN, CONF_NAME, Platform
++from homeassistant.const import CONF_NAME, Platform
+ from homeassistant.core import HomeAssistant, ServiceCall
+ from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+ from homeassistant.helpers import config_validation as cv, discovery, intent
+@@ -23,6 +23,7 @@ from .helpers import (
+     GoogleAssistantSDKAudioView,
+     InMemoryStorage,
+     async_send_text_commands,
++    create_credentials,
+ )
+ 
+ SERVICE_SEND_TEXT_COMMAND = "send_text_command"
+@@ -154,12 +155,12 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
+             await session.async_ensure_token_valid()
+             self.assistant = None
+         if not self.assistant or user_input.language != self.language:
+-            credentials = Credentials(session.token[CONF_ACCESS_TOKEN])
++            credentials = await create_credentials(self.hass, self.entry)
+             self.language = user_input.language
+-            self.assistant = TextAssistant(credentials, self.language)
++            self.assistant = TextAssistant(credentials, self.language, display=True)
+ 
          resp = self.assistant.assist(user_input.text)
 -        text_response = resp[0] or "<empty response>"
 +        text_response = parse_response(self.hass, user_input.text, resp)
-
+ 
+         intent_response = intent.IntentResponse(language=user_input.language)
+         intent_response.async_set_speech(text_response)
 diff --git a/homeassistant/components/google_assistant_sdk/helpers.py b/homeassistant/components/google_assistant_sdk/helpers.py
-index 1d89e208ce..34623fe08e 100644
+index 1d89e208ce..a5a3138111 100644
 --- a/homeassistant/components/google_assistant_sdk/helpers.py
 +++ b/homeassistant/components/google_assistant_sdk/helpers.py
-@@ -2,2 +2,3 @@
+@@ -1,8 +1,11 @@
+ """Helper classes for Google Assistant SDK integration."""
  from __future__ import annotations
 +from .helpers2 import parse_response
-
-@@ -68,7 +69,7 @@ async def async_send_text_commands(
+ 
+ from http import HTTPStatus
++import json
+ import logging
++import os
+ from typing import Any
+ import uuid
+ 
+@@ -28,6 +31,7 @@ from homeassistant.helpers.event import async_call_later
+ 
+ from .const import (
+     CONF_LANGUAGE_CODE,
++    DATA_CREDENTIALS,
+     DATA_MEM_STORAGE,
+     DATA_SESSION,
+     DOMAIN,
+@@ -48,13 +52,27 @@ DEFAULT_LANGUAGE_CODES = {
+ }
+ 
+ 
+-async def async_send_text_commands(
+-    hass: HomeAssistant, commands: list[str], media_players: list[str] | None = None
+-) -> None:
+-    """Send text commands to Google Assistant Service."""
+-    # There can only be 1 entry (config_flow has single_instance_allowed)
+-    entry: ConfigEntry = hass.config_entries.async_entries(DOMAIN)[0]
+-
++async def create_credentials(hass: HomeAssistant, entry: ConfigEntry) -> Credentials:
++    """Create credentials to pass to TextAssistant."""
++    # Credentials already exist in memory, return that.
++    if DATA_CREDENTIALS in hass.data[DOMAIN][entry.entry_id]:
++        return hass.data[DOMAIN][entry.entry_id][DATA_CREDENTIALS]
++
++    # Check if there is a json file created with google-oauthlib-tool with application type of Desktop app.
++    # This is needed for personal results to work.
++    credentials_json_filename = hass.config.path(
++        "google_assistant_sdk_credentials.json"
++    )
++    if os.path.isfile(credentials_json_filename):
++        with open(credentials_json_filename, encoding="utf-8") as credentials_json_file:
++            credentials = Credentials(token=None, **json.load(credentials_json_file))
++            # Store credentials in memory to avoid reading the file every time.
++            hass.data[DOMAIN][entry.entry_id][DATA_CREDENTIALS] = credentials
++            return credentials
++
++    # Create credentials using only the access token, application type of Web application,
++    # using the LocalOAuth2Implementation.
++    # Personal results don't work with this.
+     session: OAuth2Session = hass.data[DOMAIN][entry.entry_id][DATA_SESSION]
+     try:
+         await session.async_ensure_token_valid()
+@@ -62,15 +80,24 @@ async def async_send_text_commands(
+         if 400 <= err.status < 500:
+             entry.async_start_reauth(hass)
+         raise err
++    return Credentials(session.token[CONF_ACCESS_TOKEN])
++
++
++async def async_send_text_commands(
++    hass: HomeAssistant, commands: list[str], media_players: list[str] | None = None
++) -> None:
++    """Send text commands to Google Assistant Service."""
++    # There can only be 1 entry (config_flow has single_instance_allowed)
++    entry: ConfigEntry = hass.config_entries.async_entries(DOMAIN)[0]
+ 
+-    credentials = Credentials(session.token[CONF_ACCESS_TOKEN])
++    credentials = await create_credentials(hass, entry)
+     language_code = entry.options.get(CONF_LANGUAGE_CODE, default_language_code(hass))
      with TextAssistant(
 -        credentials, language_code, audio_out=bool(media_players)
 +        credentials, language_code, audio_out=bool(media_players), display=True
@@ -33,9 +128,11 @@ index 1d89e208ce..34623fe08e 100644
 -            text_response = resp[0]
 +            text_response = parse_response(hass, command, resp)
              _LOGGER.debug("command: %s\nresponse: %s", command, text_response)
+             audio_response = resp[2]
+             if media_players and audio_response:
 diff --git a/homeassistant/components/google_assistant_sdk/helpers2.py b/homeassistant/components/google_assistant_sdk/helpers2.py
 new file mode 100644
-index 0000000000..3c7dd57034
+index 0000000000..3c365ab940
 --- /dev/null
 +++ b/homeassistant/components/google_assistant_sdk/helpers2.py
 @@ -0,0 +1,25 @@
