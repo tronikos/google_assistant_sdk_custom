@@ -43,6 +43,18 @@ index db2a8d9512..0ec80935cb 100644
  
          intent_response = intent.IntentResponse(language=user_input.language)
          intent_response.async_set_speech(text_response)
+diff --git a/homeassistant/components/google_assistant_sdk/const.py b/homeassistant/components/google_assistant_sdk/const.py
+index d63aec0ebd..e816c12fbb 100644
+--- a/homeassistant/components/google_assistant_sdk/const.py
++++ b/homeassistant/components/google_assistant_sdk/const.py
+@@ -7,6 +7,7 @@ DEFAULT_NAME: Final = "Google Assistant SDK"
+ 
+ CONF_LANGUAGE_CODE: Final = "language_code"
+ 
++DATA_CREDENTIALS: Final = "credentials"
+ DATA_MEM_STORAGE: Final = "mem_storage"
+ DATA_SESSION: Final = "session"
+ 
 diff --git a/homeassistant/components/google_assistant_sdk/helpers.py b/homeassistant/components/google_assistant_sdk/helpers.py
 index 1d89e208ce..a5a3138111 100644
 --- a/homeassistant/components/google_assistant_sdk/helpers.py
