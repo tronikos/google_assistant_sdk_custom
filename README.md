@@ -14,9 +14,9 @@ The workaround, per the linked bug, is to enable HTML output and then parse the 
 Because the core integrations are [not allowed](https://github.com/home-assistant/architecture/blob/master/adr/0004-webscraping.md) to parse HTML,
 this custom integration is needed.
 
-In addition, because services calls currently don't return values (see [discussion](https://github.com/home-assistant/architecture/discussions/777)),
-the workaround is to fire events of `event_type: google_assistant_sdk_custom_event` containing the command and response.
-See also rejected [PR](https://github.com/home-assistant/core/pull/84856).
+In addition, because responses for services calls were not a thing yet,
+the workaround was to fire events of `event_type: google_assistant_sdk_custom_event` containing the command and response.
+TODO: Deprecate this and switch example to use the new way of getting responses from service calls.
 
 Lastly, there is a pending [PR](https://github.com/home-assistant/core/pull/88871) to enable personal results which has been in the review queue for several months.
 

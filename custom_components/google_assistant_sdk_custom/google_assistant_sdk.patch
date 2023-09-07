@@ -1,11 +1,8 @@
 diff --git a/homeassistant/components/google_assistant_sdk/__init__.py b/homeassistant/components/google_assistant_sdk/__init__.py
-index db2a8d9512..0ec80935cb 100644
+index 24b71dd018..65e4db54b6 100644
 --- a/homeassistant/components/google_assistant_sdk/__init__.py
 +++ b/homeassistant/components/google_assistant_sdk/__init__.py
-@@ -1,14 +1,14 @@
- """Support for Google Assistant SDK."""
- from __future__ import annotations
-+from .helpers2 import parse_response
+@@ -5,12 +5,11 @@ import dataclasses
  
  import aiohttp
  from gassist_text import TextAssistant
@@ -16,23 +13,25 @@ index db2a8d9512..0ec80935cb 100644
  from homeassistant.config_entries import ConfigEntry, ConfigEntryState
 -from homeassistant.const import CONF_ACCESS_TOKEN, CONF_NAME, Platform
 +from homeassistant.const import CONF_NAME, Platform
- from homeassistant.core import HomeAssistant, ServiceCall
- from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
- from homeassistant.helpers import config_validation as cv, discovery, intent
-@@ -23,6 +23,7 @@ from .helpers import (
+ from homeassistant.core import (
+     HomeAssistant,
+     ServiceCall,
+@@ -29,7 +28,9 @@ from .const import DATA_MEM_STORAGE, DATA_SESSION, DOMAIN, SUPPORTED_LANGUAGE_CO
+ from .helpers import (
      GoogleAssistantSDKAudioView,
      InMemoryStorage,
++    async_create_credentials,
      async_send_text_commands,
-+    create_credentials,
++    parse_response,
  )
  
  SERVICE_SEND_TEXT_COMMAND = "send_text_command"
-@@ -154,12 +155,12 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
+@@ -164,12 +165,12 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
              await session.async_ensure_token_valid()
              self.assistant = None
          if not self.assistant or user_input.language != self.language:
 -            credentials = Credentials(session.token[CONF_ACCESS_TOKEN])
-+            credentials = await create_credentials(self.hass, self.entry)
++            credentials = await async_create_credentials(self.hass, self.entry)
              self.language = user_input.language
 -            self.assistant = TextAssistant(credentials, self.language)
 +            self.assistant = TextAssistant(credentials, self.language, display=True)
@@ -56,14 +55,12 @@ index d63aec0ebd..e816c12fbb 100644
  DATA_SESSION: Final = "session"
  
 diff --git a/homeassistant/components/google_assistant_sdk/helpers.py b/homeassistant/components/google_assistant_sdk/helpers.py
-index 1d89e208ce..a5a3138111 100644
+index 5ae39c98f3..c5fedc8b0b 100644
 --- a/homeassistant/components/google_assistant_sdk/helpers.py
 +++ b/homeassistant/components/google_assistant_sdk/helpers.py
-@@ -1,8 +1,11 @@
- """Helper classes for Google Assistant SDK integration."""
- from __future__ import annotations
-+from .helpers2 import parse_response
+@@ -3,12 +3,15 @@ from __future__ import annotations
  
+ from dataclasses import dataclass
  from http import HTTPStatus
 +import json
  import logging
@@ -71,7 +68,13 @@ index 1d89e208ce..a5a3138111 100644
  from typing import Any
  import uuid
  
-@@ -28,6 +31,7 @@ from homeassistant.helpers.event import async_call_later
+ import aiohttp
+ from aiohttp import web
++from bs4 import BeautifulSoup
+ from gassist_text import TextAssistant
+ from google.oauth2.credentials import Credentials
+ 
+@@ -29,6 +32,7 @@ from homeassistant.helpers.event import async_call_later
  
  from .const import (
      CONF_LANGUAGE_CODE,
@@ -79,18 +82,20 @@ index 1d89e208ce..a5a3138111 100644
      DATA_MEM_STORAGE,
      DATA_SESSION,
      DOMAIN,
-@@ -48,13 +52,27 @@ DEFAULT_LANGUAGE_CODES = {
- }
+@@ -56,13 +60,29 @@ class CommandResponse:
+     text: str
  
  
 -async def async_send_text_commands(
 -    hass: HomeAssistant, commands: list[str], media_players: list[str] | None = None
--) -> None:
+-) -> list[CommandResponse]:
 -    """Send text commands to Google Assistant Service."""
 -    # There can only be 1 entry (config_flow has single_instance_allowed)
 -    entry: ConfigEntry = hass.config_entries.async_entries(DOMAIN)[0]
 -
-+async def create_credentials(hass: HomeAssistant, entry: ConfigEntry) -> Credentials:
++async def async_create_credentials(
++    hass: HomeAssistant, entry: ConfigEntry
++) -> Credentials:
 +    """Create credentials to pass to TextAssistant."""
 +    # Credentials already exist in memory, return that.
 +    if DATA_CREDENTIALS in hass.data[DOMAIN][entry.entry_id]:
@@ -114,27 +119,28 @@ index 1d89e208ce..a5a3138111 100644
      session: OAuth2Session = hass.data[DOMAIN][entry.entry_id][DATA_SESSION]
      try:
          await session.async_ensure_token_valid()
-@@ -62,15 +80,24 @@ async def async_send_text_commands(
+@@ -70,16 +90,25 @@ async def async_send_text_commands(
          if 400 <= err.status < 500:
              entry.async_start_reauth(hass)
          raise err
 +    return Credentials(session.token[CONF_ACCESS_TOKEN])
-+
+ 
+-    credentials = Credentials(session.token[CONF_ACCESS_TOKEN])
 +
 +async def async_send_text_commands(
 +    hass: HomeAssistant, commands: list[str], media_players: list[str] | None = None
-+) -> None:
++) -> list[CommandResponse]:
 +    """Send text commands to Google Assistant Service."""
 +    # There can only be 1 entry (config_flow has single_instance_allowed)
 +    entry: ConfigEntry = hass.config_entries.async_entries(DOMAIN)[0]
- 
--    credentials = Credentials(session.token[CONF_ACCESS_TOKEN])
-+    credentials = await create_credentials(hass, entry)
++
++    credentials = await async_create_credentials(hass, entry)
      language_code = entry.options.get(CONF_LANGUAGE_CODE, default_language_code(hass))
      with TextAssistant(
 -        credentials, language_code, audio_out=bool(media_players)
 +        credentials, language_code, audio_out=bool(media_players), display=True
      ) as assistant:
+         command_response_list = []
          for command in commands:
              resp = assistant.assist(command)
 -            text_response = resp[0]
@@ -142,28 +148,18 @@ index 1d89e208ce..a5a3138111 100644
              _LOGGER.debug("command: %s\nresponse: %s", command, text_response)
              audio_response = resp[2]
              if media_players and audio_response:
-diff --git a/homeassistant/components/google_assistant_sdk/helpers2.py b/homeassistant/components/google_assistant_sdk/helpers2.py
-new file mode 100644
-index 0000000000..3c365ab940
---- /dev/null
-+++ b/homeassistant/components/google_assistant_sdk/helpers2.py
-@@ -0,0 +1,25 @@
-+"""Helper2 classes for Google Assistant SDK integration."""
-+from bs4 import BeautifulSoup
-+
-+from homeassistant.core import HomeAssistant
-+
-+from .const import DOMAIN
-+
-+
+@@ -104,6 +133,25 @@ async def async_send_text_commands(
+         return command_response_list
+ 
+ 
 +def parse_response(hass: HomeAssistant, command: str, resp):
-+    """Parses a response from Google Assistant API Service and fires an event containing request and response."""
++    """Parse a response from Google Assistant API Service and fires an event containing request and response."""
 +    response = ""
 +    if resp[0]:
 +        response = resp[0]
 +    elif resp[1]:
-+        html = BeautifulSoup(resp[1], "html.parser")
-+        card_content = html.find("div", id="assistant-card-content")
++        soup = BeautifulSoup(resp[1], "html.parser")
++        card_content = soup.find("div", id="assistant-card-content")
 +        if card_content:
 +            html = card_content
 +        response = html.get_text(separator="\n", strip=True)
@@ -173,3 +169,8 @@ index 0000000000..3c365ab940
 +    }
 +    hass.bus.async_fire(DOMAIN + "_custom_event", event_data)
 +    return response
++
++
+ def default_language_code(hass: HomeAssistant):
+     """Get default language code based on Home Assistant config."""
+     language_code = f"{hass.config.language}-{hass.config.country}"
