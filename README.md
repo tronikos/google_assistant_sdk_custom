@@ -14,10 +14,6 @@ The workaround, per the linked bug, is to enable HTML output and then parse the 
 Because the core integrations are [not allowed](https://github.com/home-assistant/architecture/blob/master/adr/0004-webscraping.md) to parse HTML,
 this custom integration is needed.
 
-In addition, because responses for services calls were not a thing yet,
-the workaround was to fire events of `event_type: google_assistant_sdk_custom_event` containing the command and response.
-TODO: Deprecate this and switch example to use the new way of getting responses from service calls.
-
 Lastly, there is a pending [PR](https://github.com/home-assistant/core/pull/88871) to enable personal results which has been in the review queue for several months.
 
 # Installation
@@ -91,52 +87,21 @@ Icon: mdi:shield-home
 Entity ID: input_text.nest_guard_status
 ```
 
-Create [automation](http://homeassistant.local:8123/config/automation/dashboard):
-
-```yaml
-alias: "Nest Guard: status"
-description: ""
-trigger:
-  - platform: time_pattern
-    minutes: "10"
-    id: time
-  - platform: event
-    event_type: google_assistant_sdk_custom_event
-    event_data:
-      request: what is the status of nest guard
-    id: status
-condition: []
-action:
-  - choose:
-      - conditions:
-          - condition: trigger
-            id: time
-        sequence:
-          - service: google_assistant_sdk.send_text_command
-            data:
-              command: what is the status of nest guard
-      - conditions:
-          - condition: trigger
-            id: status
-        sequence:
-          - service: input_text.set_value
-            data:
-              value: "{{ trigger.event.data.response }}"
-            target:
-              entity_id: input_text.nest_guard_status
-mode: queued
-max: 10
-```
-
 Create following [scripts](http://homeassistant.local:8123/config/script/dashboard):
 
 ```yaml
 nest_guard_refresh:
-  alias: 'Nest Guard: Refresh'
+  alias: "Nest Guard: Refresh"
   sequence:
-  - service: google_assistant_sdk.send_text_command
-    data:
-      command: what is the status of nest guard
+    - service: google_assistant_sdk.send_text_command
+      data:
+        command: what is the status of nest guard
+      response_variable: response
+    - service: input_text.set_value
+      data:
+        value: "{{ response.responses[0].text }}"
+      target:
+        entity_id: input_text.nest_guard_status
   mode: single
   icon: mdi:shield-refresh
 nest_guard_away:
@@ -159,6 +124,22 @@ nest_guard_home:
     data: {}
   mode: single
   icon: mdi:shield-home
+```
+
+Create [automation](http://homeassistant.local:8123/config/automation/dashboard):
+
+```yaml
+alias: "Nest Guard: status"
+description: ""
+trigger:
+  - platform: time_pattern
+    minutes: "10"
+condition: []
+action:
+  - service: script.nest_guard_refresh
+    data: {}
+mode: queued
+max: 10
 ```
 
 Add the following Entities card in the lovelace dashboard:
