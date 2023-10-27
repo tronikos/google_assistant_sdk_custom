@@ -8,7 +8,7 @@ import subprocess
 import homeassistant.components.google_assistant_sdk as google_assistant_sdk
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, DOMAIN as HA_DOMAIN
-from homeassistant.const import SERVICE_HOMEASSISTANT_RESTART
+from homeassistant.components.homeassistant.const import SERVICE_HOMEASSISTANT_RESTART
 
 _LOGGER = logging.getLogger(__name__)
 PATCH_FILE = os.path.dirname(os.path.realpath(__file__)) + "/google_assistant_sdk.patch"
