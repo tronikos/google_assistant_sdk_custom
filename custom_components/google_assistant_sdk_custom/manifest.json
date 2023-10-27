@@ -1,18 +1,13 @@
 {
   "domain": "google_assistant_sdk_custom",
   "name": "Google Assistant SDK Custom",
-  "codeowners": [
-    "@tronikos"
-  ],
+  "codeowners": ["@tronikos"],
   "config_flow": true,
-  "dependencies": [
-    "google_assistant_sdk"
-  ],
+  "dependencies": ["application_credentials", "http"],
   "documentation": "https://github.com/tronikos/google_assistant_sdk_custom",
+  "integration_type": "service",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/tronikos/google_assistant_sdk_custom/issues",
-  "requirements": [
-    "beautifulsoup4"
-  ],
+  "requirements": ["beautifulsoup4", "gassist-text==0.0.10"],
   "version": "0.0.0"
 }

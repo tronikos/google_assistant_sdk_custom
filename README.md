@@ -1,10 +1,13 @@
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-
 # Google Assistant SDK Custom integration for Home Assistant
 
-This integration patches [Google Assistant SDK integration](https://www.home-assistant.io/integrations/google_assistant_sdk/) to allow getting responses from commands to Google Assistant and to enable personal results.
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-Note: After a Home Assistant update the patch will be reapplied automatically and Home Assistant will restart.
+# About
+
+This integration is a copy of [Google Assistant SDK integration](https://www.home-assistant.io/integrations/google_assistant_sdk/) with the following additional features:
+
+- HTML responses as text from commands to Google Assistant
+- personal results
 
 ## Why aren't these changes in the core Google Assistant SDK integration?
 
@@ -20,7 +23,7 @@ Lastly, there is a pending [PR](https://github.com/home-assistant/core/pull/8887
 
 ## HACS
 
-1. [Add](http://homeassistant.local:8123/hacs/integrations) custom integrations repository: https://github.com/tronikos/google_assistant_sdk_custom
+1. [Add](http://homeassistant.local:8123/hacs/integrations) custom integrations repository: <https://github.com/tronikos/google_assistant_sdk_custom>
 2. Select "Google Assistant SDK Custom" in the Integration tab and click download
 3. Restart Home Assistant
 4. Enable the integration
@@ -35,7 +38,6 @@ Lastly, there is a pending [PR](https://github.com/home-assistant/core/pull/8887
 
 1. Go to [Settings / Devices & Services / Integrations](http://homeassistant.local:8123/config/integrations). Click **+ ADD INTEGRATION**
 2. Search for "Google Assistant SDK Custom" and click on it
-3. Restart Home Assistant
 
 # Personal results
 
@@ -50,7 +52,7 @@ Lastly, there is a pending [PR](https://github.com/home-assistant/core/pull/8887
 7. Rename the downloaded file to `client_secret.json`
 8. On your Windows or Linux or Mac machine download Python if you don't have it already.
 9. Open terminal (on windows click on start and then type cmd).
-10. On the terminal run the following commands (preferably in a Python virtual environment): 
+10. On the terminal run the following commands (preferably in a Python virtual environment):
 11. `python -m pip install --upgrade google-auth-oauthlib[tool]`
 12. Under Windows: `google-oauthlib-tool --scope https://www.googleapis.com/auth/assistant-sdk-prototype --scope https://www.googleapis.com/auth/gcm --save --client-secrets %userprofile%\Downloads\client_secret.json`
 13. Or under Linux: `google-oauthlib-tool --scope https://www.googleapis.com/auth/assistant-sdk-prototype --scope https://www.googleapis.com/auth/gcm --save --client-secrets ~/Downloads/client_secret.json`
@@ -58,7 +60,7 @@ Lastly, there is a pending [PR](https://github.com/home-assistant/core/pull/8887
 15. Once you select the correct account, add a tick to both: "Use your Google Assistant: broad access to your Google account."  and "Send information to your Android device.".
 16. Click continue.
 17. If everything was successful you will get "The authentication flow has completed. You may close this window." in your browser and in your terminal you will see the path where the credentials was saved. E.g. `credentials saved: C:\Users\user\AppData\Roaming\google-oauthlib-tool\credentials.json`
-18. In the file editor of your Home Assistant, typically http://homeassistant.local:8123/core_configurator, upload `credentials.json` in your config directory and rename it to `google_assistant_sdk_credentials.json`.
+18. In the file editor of your Home Assistant, typically <http://homeassistant.local:8123/core_configurator>, upload `credentials.json` in your config directory and rename it to `google_assistant_sdk_credentials.json`.
 19. If you have .gitignore in your config directory, add `google_assistant_sdk_credentials.json` in that file to avoid uploading your credentials to GitHub.
 
 ## Enable personal results
@@ -81,7 +83,7 @@ because Google Assistant doesn't allow disarming Nest Guard.
 
 Create a text [helper](http://homeassistant.local:8123/config/helpers) with:
 
-```
+```yaml
 Name: Nest Guard Status
 Icon: mdi:shield-home
 Entity ID: input_text.nest_guard_status
@@ -93,7 +95,7 @@ Create following [scripts](http://homeassistant.local:8123/config/script/dashboa
 nest_guard_refresh:
   alias: "Nest Guard: Refresh"
   sequence:
-    - service: google_assistant_sdk.send_text_command
+    - service: google_assistant_sdk_custom.send_text_command
       data:
         command: what is the status of nest guard
       response_variable: response
@@ -107,7 +109,7 @@ nest_guard_refresh:
 nest_guard_away:
   alias: 'Nest Guard: Away'
   sequence:
-  - service: google_assistant_sdk.send_text_command
+  - service: google_assistant_sdk_custom.send_text_command
     data:
       command: Set Nest Guard to away and guarding
   - service: script.nest_guard_refresh
@@ -117,7 +119,7 @@ nest_guard_away:
 nest_guard_home:
   alias: 'Nest Guard: Home'
   sequence:
-  - service: google_assistant_sdk.send_text_command
+  - service: google_assistant_sdk_custom.send_text_command
     data:
       command: Set Nest Guard to home and guarding
   - service: script.nest_guard_refresh
@@ -163,6 +165,8 @@ footer:
 ```
 
 ## Other examples
+
+(You will have to replace `google_assistant_sdk.send_text_command` with `google_assistant_sdk_custom.send_text_command`).
 
 - [360 vacuum](https://community.home-assistant.io/t/360-s6-vacuum-robot/124990/29)
 - [robot mowers](https://github.com/tronikos/google_assistant_sdk_custom/issues/2#issuecomment-1473697969)
