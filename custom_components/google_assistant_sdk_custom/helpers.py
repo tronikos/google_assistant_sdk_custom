@@ -148,7 +148,7 @@ def parse_response(hass: HomeAssistant, command: str, resp):
         "request": command,
         "response": response,
     }
-    hass.bus.async_fire(DOMAIN + "_custom_event", event_data)
+    hass.bus.async_fire(DOMAIN + "_event", event_data)
     return response
 
 
