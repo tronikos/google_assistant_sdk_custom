@@ -1,15 +1,17 @@
 """Support for Google Assistant SDK."""
+
 from __future__ import annotations
 
 import dataclasses
 
 import aiohttp
 from gassist_text import TextAssistant
+from google.oauth2.credentials import Credentials
 import voluptuous as vol
 
 from homeassistant.components import conversation
 from homeassistant.config_entries import ConfigEntry, ConfigEntryState
-from homeassistant.const import CONF_NAME, Platform
+from homeassistant.const import CONF_ACCESS_TOKEN, CONF_NAME, Platform
 from homeassistant.core import (
     HomeAssistant,
     ServiceCall,
@@ -28,7 +30,6 @@ from .const import DATA_MEM_STORAGE, DATA_SESSION, DOMAIN, SUPPORTED_LANGUAGE_CO
 from .helpers import (
     GoogleAssistantSDKAudioView,
     InMemoryStorage,
-    async_create_credentials,
     async_send_text_commands,
     parse_response,
 )
@@ -98,7 +99,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         if entry.state == ConfigEntryState.LOADED
     ]
     if len(loaded_entries) == 1:
-        for service_name in hass.services.async_services()[DOMAIN]:
+        for service_name in hass.services.async_services_for_domain(DOMAIN):
             hass.services.async_remove(DOMAIN, service_name)
 
     conversation.async_unset_agent(hass, entry)
@@ -165,11 +166,13 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
             await session.async_ensure_token_valid()
             self.assistant = None
         if not self.assistant or user_input.language != self.language:
-            credentials = await async_create_credentials(self.hass, self.entry)
+            credentials = Credentials(session.token[CONF_ACCESS_TOKEN])
             self.language = user_input.language
             self.assistant = TextAssistant(credentials, self.language, display=True)
 
-        resp = self.assistant.assist(user_input.text)
+        resp = await self.hass.async_add_executor_job(
+            self.assistant.assist, user_input.text
+        )
         text_response = parse_response(self.hass, user_input.text, resp)
 
         intent_response = intent.IntentResponse(language=user_input.language)
