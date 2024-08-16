@@ -1,0 +1,61 @@
+{
+    "application_credentials": {
+        "description": "Siga as [instruções]({more_info_url}) para a [tela de consentimento OAuth]({oauth_consent_url}) para dar ao Home Assistant acesso ao seu Google Assistant SDK. Também precisa criar Credenciais de Aplicação ligadas à sua conta:\n1. Vá para [Credenciais]({oauth_creds_url}) e clique em **Criar Credenciais**.\n1. Na lista suspensa, selecione **ID do cliente OAuth**.\n1. Selecione **Aplicação Web** para o Tipo de Aplicação.\n\n"
+    },
+    "config": {
+        "abort": {
+            "already_configured": "A conta já está configurada",
+            "already_in_progress": "O fluxo de configuração já está em progresso",
+            "cannot_connect": "Falha ao conectar",
+            "invalid_access_token": "Token de acesso inválido",
+            "missing_configuration": "O componente não está configurado. Por favor, siga a documentação.",
+            "oauth_error": "Dados de token inválidos recebidos.",
+            "oauth_failed": "Erro ao obter o token de acesso.",
+            "oauth_timeout": "Tempo esgotado ao resolver o token OAuth.",
+            "oauth_unauthorized": "Erro de autorização OAuth ao obter o token de acesso.",
+            "reauth_successful": "Re-autenticação bem-sucedida",
+            "timeout_connect": "Tempo esgotado ao estabelecer conexão",
+            "unknown": "Erro inesperado"
+        },
+        "create_entry": {
+            "default": "Autenticado com sucesso"
+        },
+        "step": {
+            "auth": {
+                "title": "Ligar Conta Google"
+            },
+            "pick_implementation": {
+                "title": "Escolha o método de autenticação"
+            },
+            "reauth_confirm": {
+                "description": "A integração do Google Assistant SDK precisa re-autenticar a sua conta",
+                "title": "Autenticação expirada para {name}"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "language_code": "Código de idioma"
+                }
+            }
+        }
+    },
+    "services": {
+        "send_text_command": {
+            "description": "Envia um comando como uma consulta de texto para o Google Assistant.",
+            "fields": {
+                "command": {
+                    "description": "Comando(s) a enviar para o Google Assistant.",
+                    "name": "Comando"
+                },
+                "media_player": {
+                    "description": "Nome(s) das entidades de reprodutor de mídia para reproduzir a resposta.",
+                    "name": "Entidade de reprodutor de mídia"
+                }
+            },
+            "name": "Enviar comando de texto"
+        }
+    }
+}
