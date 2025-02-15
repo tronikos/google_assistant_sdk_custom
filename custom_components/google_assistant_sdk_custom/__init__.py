@@ -100,12 +100,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     hass.data[DOMAIN].pop(entry.entry_id)
-    loaded_entries = [
-        entry
-        for entry in hass.config_entries.async_entries(DOMAIN)
-        if entry.state == ConfigEntryState.LOADED
+    other_loaded_entries = [
+        _entry
+        for _entry in hass.config_entries.async_loaded_entries(DOMAIN)
+        if _entry.entry_id != entry.entry_id
     ]
-    if len(loaded_entries) == 1:
+    if not other_loaded_entries:
         for service_name in hass.services.async_services_for_domain(DOMAIN):
             hass.services.async_remove(DOMAIN, service_name)
 
