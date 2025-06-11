@@ -6,16 +6,16 @@
         "abort": {
             "already_configured": "A fi\u00f3k m\u00e1r konfigur\u00e1lva van",
             "already_in_progress": "A konfigur\u00e1l\u00e1s m\u00e1r folyamatban van",
-            "cannot_connect": "Sikertelen csatlakoz\u00e1s",
-            "invalid_access_token": "\u00c9rv\u00e9nytelen hozz\u00e1f\u00e9r\u00e9si token",
+            "authorize_url_timeout": "Id\u0151t\u00fall\u00e9p\u00e9s a hiteles\u00edt\u00e9si URL l\u00e9trehoz\u00e1sakor.",
             "missing_configuration": "A komponens nincs konfigur\u00e1lva. K\u00e9rem, k\u00f6vesse a dokument\u00e1ci\u00f3t.",
+            "missing_credentials": "Az integr\u00e1ci\u00f3hoz az alkalmaz\u00e1s hiteles\u00edt\u0151 adataira van sz\u00fcks\u00e9g.",
+            "no_url_available": "Nincs el\u00e9rhet\u0151 URL. A hib\u00e1val kapcsolatos inform\u00e1ci\u00f3k\u00e9rt n\u00e9zze meg a [s\u00fag\u00f3]({docs_url}) le\u00edr\u00e1s\u00e1t.",
             "oauth_error": "\u00c9rv\u00e9nytelen token adatok \u00e9rkeztek.",
             "oauth_failed": "Hiba a hozz\u00e1f\u00e9r\u00e9si token megszerz\u00e9se k\u00f6zben.",
             "oauth_timeout": "Id\u0151t\u00fall\u00e9p\u00e9s az OAuth-token felold\u00e1sakor.",
             "oauth_unauthorized": "OAuth enged\u00e9lyez\u00e9si hiba a hozz\u00e1f\u00e9r\u00e9si token megszerz\u00e9se sor\u00e1n.",
-            "reauth_successful": "Az \u00fajrahiteles\u00edt\u00e9s sikeres volt.",
-            "timeout_connect": "Id\u0151t\u00fall\u00e9p\u00e9s a kapcsolat l\u00e9trehoz\u00e1sa sor\u00e1n",
-            "unknown": "V\u00e1ratlan hiba"
+            "reauth_successful": "Az \u00fajrahiteles\u00edt\u00e9s sikeres volt",
+            "user_rejected_authorize": "A fi\u00f3k csatol\u00e1sa elutas\u00edtva: {error}"
         },
         "create_entry": {
             "default": "Sikeres hiteles\u00edt\u00e9s"
@@ -33,14 +33,17 @@
             }
         }
     },
+    "exceptions": {
+        "grpc_error": {
+            "message": "Nem siker\u00fclt kommunik\u00e1lni a Google Seg\u00e9ddel"
+        }
+    },
     "options": {
         "step": {
             "init": {
                 "data": {
-                    "enable_conversation_agent": "A besz\u00e9lget\u00e9sk\u00f6zvet\u00edt\u0151 enged\u00e9lyez\u00e9se",
                     "language_code": "Nyelvi k\u00f3d"
-                },
-                "description": "\u00c1ll\u00edtsa be a Google Seg\u00e9ddel folytatott interakci\u00f3k nyelv\u00e9t, valamint azt, hogy enged\u00e9lyezi-e a besz\u00e9lget\u00e9sk\u00f6zvet\u00edt\u0151t."
+                }
             }
         }
     },

@@ -1,17 +1,21 @@
 {
+    "application_credentials": {
+        "description": "Siga as [instru\u00e7\u00f5es]({more_info_url}) para a [tela de consentimento OAuth]({oauth_consent_url}) para dar ao Home Assistant acesso ao seu Google Assistant SDK. Tamb\u00e9m precisa criar Credenciais de Aplica\u00e7\u00e3o vinculadas \u00e0 sua conta:\n1. V\u00e1 para [Credenciais]({oauth_creds_url}) e selecione **Criar Credenciais**.\n2. Na lista suspensa, selecione **ID do cliente OAuth**.\n3. Selecione **Aplica\u00e7\u00e3o Web** para o Tipo de Aplica\u00e7\u00e3o."
+    },
     "config": {
         "abort": {
             "already_configured": "Conta j\u00e1 configurada",
             "already_in_progress": "O processo de configura\u00e7\u00e3o j\u00e1 est\u00e1 a decorrer",
-            "cannot_connect": "A liga\u00e7\u00e3o falhou",
-            "invalid_access_token": "Token de acesso inv\u00e1lido",
+            "authorize_url_timeout": "Excedido o tempo limite para gerar um URL de autoriza\u00e7\u00e3o",
             "missing_configuration": "O componente n\u00e3o est\u00e1 configurado. Por favor, siga a documenta\u00e7\u00e3o.",
+            "missing_credentials": "A integra\u00e7\u00e3o requer credenciais de aplica\u00e7\u00e3o.",
+            "no_url_available": "Nenhum URL est\u00e1 dispon\u00edvel. Para obter informa\u00e7\u00f5es sobre esse erro, [consulte a sec\u00e7\u00e3o de ajuda]({docs_url})",
             "oauth_error": "Recebido token de autentica\u00e7\u00e3o inv\u00e1lido.",
+            "oauth_failed": "Erro ao obter o token de acesso.",
             "oauth_timeout": "Excedido o tempo limite para o OAuth token.",
             "oauth_unauthorized": "Erro de autoriza\u00e7\u00e3o OAuth ao obter o token de acesso.",
             "reauth_successful": "Reautentica\u00e7\u00e3o bem sucedida",
-            "timeout_connect": "Excedido o tempo limite para estabelecer liga\u00e7\u00e3o",
-            "unknown": "Erro inesperado"
+            "user_rejected_authorize": "Vincula\u00e7\u00e3o de conta rejeitada: {error}"
         },
         "create_entry": {
             "default": "Autenticado com sucesso"
@@ -24,20 +28,39 @@
                 "title": "Escolha o m\u00e9todo de autentica\u00e7\u00e3o"
             },
             "reauth_confirm": {
-                "description": "A integra\u00e7\u00e3o do Google Assistant SDK precisa autenticar novamente sua conta",
+                "description": "A integra\u00e7\u00e3o do Google Assistant SDK precisa reautenticar a sua conta",
                 "title": "A autentica\u00e7\u00e3o expirou para {name}"
             }
+        }
+    },
+    "exceptions": {
+        "grpc_error": {
+            "message": "Falha na comunica\u00e7\u00e3o com o Assistente Google"
         }
     },
     "options": {
         "step": {
             "init": {
                 "data": {
-                    "enable_conversation_agent": "Iniciar o agente de conversa\u00e7\u00e3o",
                     "language_code": "C\u00f3digo do idioma"
-                },
-                "description": "Defina o idioma para intera\u00e7\u00f5es com o Google Assistant e se deseja ativar o agente de conversa\u00e7\u00e3o."
+                }
             }
+        }
+    },
+    "services": {
+        "send_text_command": {
+            "description": "Envia um comando como uma consulta de texto para o Assistente do Google.",
+            "fields": {
+                "command": {
+                    "description": "Comando(s) a enviar para o Assistente do Google.",
+                    "name": "Comando"
+                },
+                "media_player": {
+                    "description": "Nome(s) das entidades do leitor multim\u00e9dia para reproduzir a resposta.",
+                    "name": "Entidade leitora de multim\u00e9dia"
+                }
+            },
+            "name": "Enviar comando de texto"
         }
     }
 }

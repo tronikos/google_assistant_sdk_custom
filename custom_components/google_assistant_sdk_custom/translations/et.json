@@ -6,16 +6,16 @@
         "abort": {
             "already_configured": "Kasutaja on juba seadistatud",
             "already_in_progress": "Seadistamine on juba k\u00e4imas",
-            "cannot_connect": "\u00dchendamine nurjus",
-            "invalid_access_token": "Vigane juurdep\u00e4\u00e4sut\u00f5end",
+            "authorize_url_timeout": "Kinnitus-URLi loomise ajal\u00f5pp",
             "missing_configuration": "Komponent pole seadistatud. Palun loe dokumentatsiooni.",
+            "missing_credentials": "Sidumine n\u00f5uab rakenduse volitusi.",
+            "no_url_available": "URL pole saadaval. Selle t\u00f5rke kohta teabe saamiseks vaata [spikrijaotis]({docs_url})",
             "oauth_error": "Saadi sobimatud loaandmed.",
             "oauth_failed": "T\u00f5rge juurdep\u00e4\u00e4sut\u00f5endi hankimisel.",
             "oauth_timeout": "OAuthi loa lahendamise ajal\u00f5pp.",
             "oauth_unauthorized": "OAuthi tuvastaimisviga juurdep\u00e4\u00e4sut\u00f5endi hankimisel.",
             "reauth_successful": "Taastuvastamine \u00f5nnestus",
-            "timeout_connect": "\u00dchenduse loomise ajal\u00f5pp",
-            "unknown": "Ootamatu t\u00f5rge"
+            "user_rejected_authorize": "Konto sidumine nurjus: {error}"
         },
         "create_entry": {
             "default": "Tuvastamine \u00f5nnestus"
@@ -33,14 +33,17 @@
             }
         }
     },
+    "exceptions": {
+        "grpc_error": {
+            "message": "Google Assistantiga suhtlemine nurjus"
+        }
+    },
     "options": {
         "step": {
             "init": {
                 "data": {
-                    "enable_conversation_agent": "V\u00f5ta vestlusagent kasutusele",
                     "language_code": "Keele kood"
-                },
-                "description": "M\u00e4\u00e4ra keel Google'i assistendiga suhtlemiseks ja kas soovid vestlusagendi lubada."
+                }
             }
         }
     },

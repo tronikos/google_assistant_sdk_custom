@@ -13,6 +13,7 @@ from aiohttp import web
 from bs4 import BeautifulSoup
 from gassist_text import TextAssistant
 from google.oauth2.credentials import Credentials
+from grpc import RpcError
 
 from homeassistant.components.http import HomeAssistantView
 from homeassistant.components.media_player import (
@@ -26,16 +27,11 @@ from homeassistant.components.media_player import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_ENTITY_ID, CONF_ACCESS_TOKEN
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.config_entry_oauth2_flow import OAuth2Session
 from homeassistant.helpers.event import async_call_later
 
-from .const import (
-    CONF_LANGUAGE_CODE,
-    DATA_MEM_STORAGE,
-    DATA_SESSION,
-    DOMAIN,
-    SUPPORTED_LANGUAGE_CODES,
-)
+from .const import CONF_LANGUAGE_CODE, DOMAIN, SUPPORTED_LANGUAGE_CODES
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -50,6 +46,16 @@ DEFAULT_LANGUAGE_CODES = {
     "pt": "pt-BR",
 }
 
+type GoogleAssistantSDKConfigEntry = ConfigEntry[GoogleAssistantSDKRuntimeData]
+
+
+@dataclass
+class GoogleAssistantSDKRuntimeData:
+    """Runtime data for Google Assistant SDK."""
+
+    session: OAuth2Session
+    mem_storage: InMemoryStorage
+
 
 @dataclass
 class CommandResponse:
@@ -63,9 +69,9 @@ async def async_send_text_commands(
 ) -> list[CommandResponse]:
     """Send text commands to Google Assistant Service."""
     # There can only be 1 entry (config_flow has single_instance_allowed)
-    entry: ConfigEntry = hass.config_entries.async_entries(DOMAIN)[0]
+    entry: GoogleAssistantSDKConfigEntry = hass.config_entries.async_entries(DOMAIN)[0]
 
-    session: OAuth2Session = hass.data[DOMAIN][entry.entry_id][DATA_SESSION]
+    session = entry.runtime_data.session
     try:
         await session.async_ensure_token_valid()
     except aiohttp.ClientResponseError as err:
@@ -80,16 +86,25 @@ async def async_send_text_commands(
     ) as assistant:
         command_response_list = []
         for command in commands:
-            resp = await hass.async_add_executor_job(assistant.assist, command)
+            try:
+                resp = await hass.async_add_executor_job(assistant.assist, command)
+            except RpcError as err:
+                _LOGGER.error(
+                    "Failed to send command '%s' to Google Assistant: %s",
+                    command,
+                    err,
+                )
+                raise HomeAssistantError(
+                    translation_domain=DOMAIN, translation_key="grpc_error"
+                ) from err
             text_response = parse_response(hass, command, resp)
             _LOGGER.debug("command: %s\nresponse: %s", command, text_response)
             audio_response = resp[2]
             if media_players and audio_response:
-                mem_storage: InMemoryStorage = hass.data[DOMAIN][entry.entry_id][
-                    DATA_MEM_STORAGE
-                ]
                 audio_url = GoogleAssistantSDKAudioView.url.format(
-                    filename=mem_storage.store_and_get_identifier(audio_response)
+                    filename=entry.runtime_data.mem_storage.store_and_get_identifier(
+                        audio_response
+                    )
                 )
                 await hass.services.async_call(
                     DOMAIN_MP,

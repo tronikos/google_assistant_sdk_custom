@@ -1,18 +1,21 @@
 {
+    "application_credentials": {
+        "description": "Vadovaukit\u0117s [instrukcijomis]({more_info_url}) [OAuth sutikimo ekrane]({oauth_consent_url}), kad suteiktum\u0117te nam\u0173 pad\u0117j\u0117jui prieig\u0105 prie \u201eGoogle Assistant\u201c SDK. Taip pat turite sukurti su paskyra susietus programos kredencialus: 1. Eikite \u012f [Credentials]({oauth_creds_url}) ir pasirinkite **Create Credentials**. 1. I\u0161skleid\u017eiamajame s\u0105ra\u0161e pasirinkite **OAuth kliento ID**. 1. Programos tipui pasirinkite **\u017diniatinklio programa**."
+    },
     "config": {
         "abort": {
             "already_configured": "Paskyra jau sukonfig\u016bruota",
             "already_in_progress": "Konfig\u016bracijos procesas jau vyksta",
-            "cannot_connect": "Nepavyko prisijungti",
-            "invalid_access_token": "Neteisingas prieigos raktas",
+            "authorize_url_timeout": "Baig\u0117si skirtasis laikas generuojant \u012fgaliojimo URL.",
             "missing_configuration": "Komponentas nesukonfig\u016bruotas. Pra\u0161ome vadovautis dokumentacija.",
+            "missing_credentials": "Integracijai reikalingi programos kredencialai.",
+            "no_url_available": "N\u0117ra URL. Nor\u0117dami gauti informacijos apie \u0161i\u0105 klaid\u0105, [\u017er. pagalbos skyri\u0173]({docs_url})",
             "oauth_error": "Gauti neteisingi prieigos rakto duomenys.",
             "oauth_failed": "Klaida gaunant prieigos rakt\u0105.",
             "oauth_timeout": "Baig\u0117si skirtasis OAuth prieigos raktas.",
             "oauth_unauthorized": "OAuth prieigos teis\u0117s klaida gaunant prieigos rakt\u0105.",
             "reauth_successful": "Pakartotinis autentifikavimas buvo s\u0117kmingas",
-            "timeout_connect": "Baig\u0117si ry\u0161io u\u017emezgimo laikas",
-            "unknown": "Netik\u0117ta klaida"
+            "user_rejected_authorize": "Paskyros susiejimas atmestas: {error}"
         },
         "create_entry": {
             "default": "S\u0117kmingai autentifikuota"
@@ -34,10 +37,8 @@
         "step": {
             "init": {
                 "data": {
-                    "enable_conversation_agent": "\u012egalinti pokalbi\u0173 agent\u0105",
                     "language_code": "Kalbos kodas"
-                },
-                "description": "Nustatykite s\u0105veikos su \"Google Assistant\" kalb\u0105 ir ar norite \u012fjungti pokalbi\u0173 agent\u0105."
+                }
             }
         }
     },
@@ -50,7 +51,7 @@
                     "name": "Komanda"
                 },
                 "media_player": {
-                    "description": "Medijos leistuvo objekt\u0173 pavadinimas (-ai), kuriame (-i) bus leid\u017eiamas atsakymas.",
+                    "description": "Medijos leistuvo subjekt\u0173 pavadinimas (-ai), kuriame (-i) bus leid\u017eiamas atsakymas.",
                     "name": "Medijos grotuvo subjektas"
                 }
             },

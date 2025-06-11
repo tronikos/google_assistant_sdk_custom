@@ -6,16 +6,16 @@
         "abort": {
             "already_configured": "Akun sudah dikonfigurasi",
             "already_in_progress": "Alur konfigurasi sedang berlangsung",
-            "cannot_connect": "Gagal terhubung",
-            "invalid_access_token": "Token akses tidak valid",
+            "authorize_url_timeout": "Tenggang waktu pembuatan URL otorisasi habis.",
             "missing_configuration": "Komponen tidak dikonfigurasi. Ikuti petunjuk dalam dokumentasi.",
+            "missing_credentials": "Integrasi memerlukan kredensial aplikasi.",
+            "no_url_available": "Tidak ada URL yang tersedia. Untuk informasi tentang kesalahan ini, [lihat bagian bantuan]({docs_url})",
             "oauth_error": "Menerima respons token yang tidak valid.",
             "oauth_failed": "Terjadi kesalahan saat mendapatkan token akses.",
             "oauth_timeout": "Tenggang waktu penyelesaian token OAuth habis.",
             "oauth_unauthorized": "Kesalahan otorisasi OAuth saat mendapatkan token akses.",
             "reauth_successful": "Autentikasi ulang berhasil",
-            "timeout_connect": "Tenggang waktu pembuatan koneksi habis",
-            "unknown": "Kesalahan tak terduga"
+            "user_rejected_authorize": "Penautan akun ditolak: {error}"
         },
         "create_entry": {
             "default": "Berhasil diautentikasi"
@@ -37,10 +37,8 @@
         "step": {
             "init": {
                 "data": {
-                    "enable_conversation_agent": "Aktifkan agen percakapan",
                     "language_code": "Kode bahasa"
-                },
-                "description": "Tetapkan bahasa untuk interaksi dengan Asisten Google dan apakah Anda ingin mengaktifkan agen percakapan."
+                }
             }
         }
     },

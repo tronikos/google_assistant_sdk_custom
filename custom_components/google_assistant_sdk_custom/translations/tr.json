@@ -1,18 +1,21 @@
 {
+    "application_credentials": {
+        "description": "Home Assistant'a Google Assistant SDK'n\u0131za eri\u015fim izni vermek i\u00e7in [OAuth onay ekran\u0131]( {oauth_consent_url} ) i\u00e7in [talimatlar\u0131]( {more_info_url} ) izleyin. Ayr\u0131ca hesab\u0131n\u0131za ba\u011fl\u0131 Uygulama Kimlik Bilgileri olu\u015fturman\u0131z gerekir: \n 1. [Kimlik Bilgileri]( {oauth_creds_url} ) b\u00f6l\u00fcm\u00fcne gidin ve **Kimlik Bilgileri Olu\u015ftur**'u se\u00e7in. \n 1. A\u00e7\u0131l\u0131r listeden **OAuth istemci kimli\u011fi**'ni se\u00e7in. \n 1. Uygulama T\u00fcr\u00fc i\u00e7in **Web uygulamas\u0131**'n\u0131 se\u00e7in."
+    },
     "config": {
         "abort": {
             "already_configured": "Hesap zaten yap\u0131land\u0131r\u0131lm\u0131\u015f",
             "already_in_progress": "Yap\u0131land\u0131rma ak\u0131\u015f\u0131 zaten devam ediyor",
-            "cannot_connect": "Ba\u011flanma hatas\u0131",
-            "invalid_access_token": "Ge\u00e7ersiz eri\u015fim anahtar\u0131",
+            "authorize_url_timeout": "Yetkilendirme URL'si olu\u015ftururken zaman a\u015f\u0131m\u0131.",
             "missing_configuration": "Bile\u015fen yap\u0131land\u0131r\u0131lmam\u0131\u015f. L\u00fctfen belgeleri takip edin.",
+            "missing_credentials": "Entegrasyon, uygulama kimlik bilgilerini gerektirir.",
+            "no_url_available": "Kullan\u0131labilir URL yok. Bu hata hakk\u0131nda bilgi i\u00e7in [yard\u0131m b\u00f6l\u00fcm\u00fcne bak\u0131n]({docs_url})",
             "oauth_error": "Ge\u00e7ersiz anahtar verileri al\u0131nd\u0131.",
             "oauth_failed": "Eri\u015fim anahtar\u0131 al\u0131n\u0131rken hata olu\u015ftu.",
             "oauth_timeout": "OAuth anahtar\u0131n\u0131 \u00e7\u00f6zme zaman a\u015f\u0131m\u0131.",
             "oauth_unauthorized": "Eri\u015fim anahtar\u0131 al\u0131n\u0131rken OAuth yetkilendirme hatas\u0131.",
             "reauth_successful": "Yeniden kimlik do\u011frulama ba\u015far\u0131l\u0131 oldu",
-            "timeout_connect": "Ba\u011flant\u0131 kurulurken zaman a\u015f\u0131m\u0131",
-            "unknown": "Beklenmeyen hata"
+            "user_rejected_authorize": "Hesap ba\u011flama reddedildi: {error}"
         },
         "create_entry": {
             "default": "Ba\u015far\u0131yla do\u011fruland\u0131"
@@ -34,10 +37,8 @@
         "step": {
             "init": {
                 "data": {
-                    "enable_conversation_agent": "Konu\u015fma arac\u0131s\u0131n\u0131 etkinle\u015ftir",
                     "language_code": "Dil kodu"
-                },
-                "description": "Google Asistan ile etkile\u015fimler i\u00e7in dili ve konu\u015fma arac\u0131s\u0131n\u0131 etkinle\u015ftirmek isteyip istemedi\u011finizi ayarlay\u0131n."
+                }
             }
         }
     },

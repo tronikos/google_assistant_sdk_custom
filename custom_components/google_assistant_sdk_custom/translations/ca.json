@@ -3,16 +3,16 @@
         "abort": {
             "already_configured": "El compte ja est\u00e0 configurat",
             "already_in_progress": "El flux de configuraci\u00f3 ja est\u00e0 en curs",
-            "cannot_connect": "Ha fallat la connexi\u00f3",
-            "invalid_access_token": "Token d'acc\u00e9s inv\u00e0lid",
+            "authorize_url_timeout": "Temps d'espera esgotat durant la generaci\u00f3 de l'URL d'autoritzaci\u00f3.",
             "missing_configuration": "El component no est\u00e0 configurat. Mira'n la documentaci\u00f3.",
+            "missing_credentials": "La integraci\u00f3 necessita credencials d'aplicaci\u00f3.",
+            "no_url_available": "No hi ha cap URL disponible. Per a m\u00e9s informaci\u00f3 sobre aquest error, [consulta la secci\u00f3 d'ajuda]({docs_url})",
             "oauth_error": "S'han rebut dades token inv\u00e0lides.",
             "oauth_failed": "S'ha produ\u00eft un error en obtenir el 'token' d'acc\u00e9s.",
             "oauth_timeout": "Temps m\u00e0xim d'espera de resoluci\u00f3 de 'token' OAuth esgotat.",
             "oauth_unauthorized": "Error d'autoritzaci\u00f3 OAuth durant l'obtenci\u00f3 del 'token' d'acc\u00e9s.",
             "reauth_successful": "Re-autenticaci\u00f3 realitzada correctament",
-            "timeout_connect": "S'ha esgotat el temps m\u00e0xim d'espera per establir connexi\u00f3",
-            "unknown": "Error inesperat"
+            "user_rejected_authorize": "S'ha rebutjat la vinculaci\u00f3 del compte: {error}"
         },
         "create_entry": {
             "default": "Autenticaci\u00f3 exitosa"
@@ -34,10 +34,8 @@
         "step": {
             "init": {
                 "data": {
-                    "enable_conversation_agent": "Activa l'agent de conversa",
                     "language_code": "Codi d'idioma"
-                },
-                "description": "Defineix l'idioma de les interaccions amb Google Assisant i tria si voleu activar l'agent de conversa."
+                }
             }
         }
     },
