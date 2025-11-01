@@ -55,10 +55,10 @@ To fix this, you must follow the steps below to create and apply `Desktop app` c
     -   In your terminal you will see the path where the credentials were saved. For example: `credentials saved: C:\Users\user\AppData\Roaming\google-oauthlib-tool\credentials.json`
 14. Open the `credentials.json` in a text editor. Keep it open since you will need to copy several values from it.
 15. In the file editor of your Home Assistant, open `/config/.storage/application_credentials`.
-    -   Locate the entry for `google_assistant_sdk` and modify `client_id` and `client_secret` to match the ones from `credentials.json`.
+    -   Locate the entry for `google_assistant_sdk_custom` and modify `client_id` and `client_secret` to match the ones from `credentials.json`.
     -   Save the file.
 16. Open `/config/.storage/core.config_entries`.
-    -   Locate the entry for `google_assistant_sdk` and modify `refresh_token` to match the one from `credentials.json`.
+    -   Locate the entry for `google_assistant_sdk_custom` and modify `refresh_token` to match the one from `credentials.json`.
     -   Save the file.
 17. Restart Home Assistant.
 18. **Verify the changes.** After restarting, confirm your edits in `/config/.storage/application_credentials` and `/config/.storage/core.config_entries` are still present. Home Assistant can sometimes overwrite manual changes to these files. If your changes were reverted, try stopping Home Assistant completely, applying the edits again, and then starting it.
