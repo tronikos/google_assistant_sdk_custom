@@ -1,21 +1,11 @@
 {
     "application_credentials": {
-        "description": "Postupujte pod\u013ea [pokynov]({more_info_url}) pre [obrazovku s\u00fahlasu OAuth]({oauth_consent_url}), aby ste poskytli asistentovi Home Assistant pr\u00edstup k v\u00e1\u0161mu Google Assistant SDK. Mus\u00edte tie\u017e vytvori\u0165 aplika\u010dn\u00e9 poverenia prepojen\u00e9 s va\u0161\u00edm \u00fa\u010dtom:\n1. Prejdite na str\u00e1nku [Poverenia]({oauth_creds_url}) a vyberte mo\u017enos\u0165 **Vytvori\u0165 poverenia**.\n2. Z rozba\u013eovacieho zoznamu vyberte polo\u017eku **OAuth client ID**.\n3. Pre typ aplik\u00e1cie vyberte **Webov\u00e1 aplik\u00e1cia**."
+        "description": "Postupujte pod\u013ea [pokynov]({more_info_url}) pre [obrazovku s\u00fahlasu OAuth]({oauth_consent_url}), aby ste Home Assistant udelili pr\u00edstup k v\u00e1\u0161mu Google Assistant SDK. Mus\u00edte tie\u017e vytvori\u0165 prihlasovacie \u00fadaje aplik\u00e1cie prepojen\u00e9 s va\u0161\u00edm \u00fa\u010dtom:\n1. Prejdite do sekcie [Prihlasovacie \u00fadaje]({oauth_creds_url}) a vyberte mo\u017enos\u0165 **Vytvori\u0165 prihlasovacie \u00fadaje**.\n1. Z roletov\u00e9ho zoznamu vyberte **OAuth client ID**.\n1. Ako typ aplik\u00e1cie vyberte **Webov\u00e1 aplik\u00e1cia**.\n1. Do po\u013ea *Autorizovan\u00e1 URI presmerovania* pridajte `{redirect_url}`."
     },
     "config": {
         "abort": {
             "already_configured": "\u00da\u010det je u\u017e nakonfigurovan\u00fd",
-            "already_in_progress": "Konfigur\u00e1cia u\u017e prebieha",
-            "authorize_url_timeout": "\u010casov\u00fd limit generovania autorizovanej adresy URL.",
-            "missing_configuration": "Komponent nie je nakonfigurovan\u00fd. Postupujte pod\u013ea dokument\u00e1cie.",
-            "missing_credentials": "Integr\u00e1cia si vy\u017eaduje poverenia aplik\u00e1cie.",
-            "no_url_available": "Nie je k dispoz\u00edcii \u017eiadna adresa URL. Inform\u00e1cie o tejto chybe n\u00e1jdete [pozrite si sekciu pomocn\u00edka]({docs_url})",
-            "oauth_error": "Prijat\u00e9 neplatn\u00e9 \u00fadaje tokenu.",
-            "oauth_failed": "Chyba pri z\u00edskavan\u00ed pr\u00edstupov\u00e9ho tokenu.",
-            "oauth_timeout": "\u010casov\u00fd limit na vyrie\u0161enie tokenu OAuth.",
-            "oauth_unauthorized": "Chyba autoriz\u00e1cie OAuth pri z\u00edskavan\u00ed pr\u00edstupov\u00e9ho tokenu.",
-            "reauth_successful": "Op\u00e4tovn\u00e9 overenie bolo \u00faspe\u0161n\u00e9",
-            "user_rejected_authorize": "Prepojenie \u00fa\u010dtu bolo odmietnut\u00e9: {error}"
+            "missing_configuration": "Komponent nie je nakonfigurovan\u00fd. Postupujte pod\u013ea dokument\u00e1cie."
         },
         "create_entry": {
             "default": "\u00daspe\u0161ne overen\u00e9"
@@ -25,6 +15,12 @@
                 "title": "Prepoji\u0165 \u00fa\u010det Google"
             },
             "pick_implementation": {
+                "data": {
+                    "implementation": "Prihlasovacie \u00fadaje aplik\u00e1cie"
+                },
+                "data_description": {
+                    "implementation": "Poverenia, ktor\u00e9 chcete pou\u017ei\u0165 na overenie."
+                },
                 "title": "Vyberte met\u00f3du overenia"
             },
             "reauth_confirm": {
@@ -34,8 +30,11 @@
         }
     },
     "exceptions": {
+        "entry_not_loaded": {
+            "message": "Polo\u017eka nie je na\u010d\u00edtan\u00e1"
+        },
         "grpc_error": {
-            "message": "Nepodarilo sa komunikova\u0165 s Asistentom Google"
+            "message": "Nepodarilo sa odosla\u0165 pr\u00edkaz `{command} ` do Google Assistant"
         }
     },
     "options": {
@@ -43,6 +42,9 @@
             "init": {
                 "data": {
                     "language_code": "K\u00f3d jazyka"
+                },
+                "data_description": {
+                    "language_code": "Jazyk pre po\u017eiadavky a odpovede s\u00faboru Google Assistant SDK."
                 }
             }
         }
@@ -56,7 +58,7 @@
                     "name": "Pr\u00edkaz"
                 },
                 "media_player": {
-                    "description": "N\u00e1zov(-y) subjektov prehr\u00e1va\u010da m\u00e9di\u00ed, na ktor\u00fdch sa m\u00e1 prehra\u0165 odpove\u010f.",
+                    "description": "N\u00e1zov(-y) entity prehr\u00e1va\u010da m\u00e9di\u00ed, na ktor\u00fdch sa m\u00e1 prehr\u00e1va\u0165 zvukov\u00e1 odpove\u010f asistenta Google. Toto nie je cielen\u00e9 na zariadenie pre samotn\u00fd pr\u00edkaz.",
                     "name": "Entita prehr\u00e1va\u010da m\u00e9di\u00ed"
                 }
             },

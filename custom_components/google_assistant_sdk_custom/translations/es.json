@@ -1,21 +1,11 @@
 {
     "application_credentials": {
-        "description": "Sigue las [instrucciones]({more_info_url}) de la [pantalla de consentimiento de OAuth]({oauth_consent_url}) para darle a Home Assistant acceso a tu SDK de Google Assistant. Tambi\u00e9n debes crear credenciales de aplicaci\u00f3n vinculadas a tu cuenta:\n1. Ve a [Credenciales]({oauth_creds_url}) y selecciona **Crear credenciales**.\n1. En la lista desplegable, selecciona **ID de cliente de OAuth**.\n1. Selecciona **Aplicaci\u00f3n web** para el tipo de aplicaci\u00f3n."
+        "description": "Sigue las [instrucciones]({more_info_url}) de la [pantalla de consentimiento de OAuth]({oauth_consent_url}) para que Home Assistant tenga acceso al SDK de tu Asistente de Google. Tambi\u00e9n debes crear las Credenciales de la Aplicaci\u00f3n vinculadas a tu cuenta: \n1. Ve a [Credenciales]({oauth_creds_url}) y selecciona **Crear Credenciales**. \n1. En la lista desplegable, selecciona **ID de cliente de OAuth**. \n1. Selecciona **Aplicaci\u00f3n web** como Tipo de aplicaci\u00f3n. \n1. A\u00f1ade `{redirect_url}` en *URI de redireccionamiento autorizados*."
     },
     "config": {
         "abort": {
             "already_configured": "La cuenta ya est\u00e1 configurada",
-            "already_in_progress": "El flujo de configuraci\u00f3n ya est\u00e1 en curso",
-            "authorize_url_timeout": "Tiempo de espera agotado mientras se generaba la URL de autorizaci\u00f3n.",
-            "missing_configuration": "El componente no est\u00e1 configurado. Por favor, sigue la documentaci\u00f3n.",
-            "missing_credentials": "La integraci\u00f3n requiere credenciales de aplicaci\u00f3n.",
-            "no_url_available": "No hay URL disponible. Para obtener informaci\u00f3n sobre este error, [revisa la secci\u00f3n de ayuda]({docs_url})",
-            "oauth_error": "Se han recibido datos de token no v\u00e1lidos.",
-            "oauth_failed": "Error al obtener el token de acceso.",
-            "oauth_timeout": "Tiempo de espera agotado mientras se resolv\u00eda el token OAuth.",
-            "oauth_unauthorized": "Error de autorizaci\u00f3n OAuth al obtener el token de acceso.",
-            "reauth_successful": "La autenticaci\u00f3n se volvi\u00f3 a realizar correctamente",
-            "user_rejected_authorize": "V\u00ednculo de cuenta rechazado: {error}"
+            "missing_configuration": "El componente no est\u00e1 configurado. Por favor, sigue la documentaci\u00f3n."
         },
         "create_entry": {
             "default": "Autenticado correctamente"
@@ -25,6 +15,12 @@
                 "title": "Vincular cuenta de Google"
             },
             "pick_implementation": {
+                "data": {
+                    "implementation": "Credenciales de la aplicaci\u00f3n"
+                },
+                "data_description": {
+                    "implementation": "Las credenciales que quieres utilizar para autenticarte."
+                },
                 "title": "Selecciona el m\u00e9todo de autenticaci\u00f3n"
             },
             "reauth_confirm": {
@@ -34,8 +30,11 @@
         }
     },
     "exceptions": {
+        "entry_not_loaded": {
+            "message": "Entrada no cargada"
+        },
         "grpc_error": {
-            "message": "No se pudo comunicar con el Asistente de Google"
+            "message": "Error al enviar el comando `{command}` al Asistente de Google"
         }
     },
     "options": {
@@ -43,6 +42,9 @@
             "init": {
                 "data": {
                     "language_code": "C\u00f3digo de idioma"
+                },
+                "data_description": {
+                    "language_code": "Idioma para las solicitudes y respuestas del SDK del Asistente de Google."
                 }
             }
         }
@@ -56,7 +58,7 @@
                     "name": "Comando"
                 },
                 "media_player": {
-                    "description": "Nombre(s) de las entidades del reproductor multimedia para reproducir la respuesta.",
+                    "description": "Nombre(s) de las entidades del reproductor multimedia donde se reproducir\u00e1 la respuesta de audio del Asistente de Google. Esto no afecta al dispositivo para el comando en s\u00ed.",
                     "name": "Entidad de reproductor multimedia"
                 }
             },

@@ -1,0 +1,77 @@
+--- a/custom_components/google_assistant_sdk_custom/__init__.py
++++ b/custom_components/google_assistant_sdk_custom/__init__.py
+@@ -23,6 +23,7 @@
+     GoogleAssistantSDKRuntimeData,
+     InMemoryStorage,
+     best_matching_language_code,
++    parse_response,
+ )
+ from .services import async_setup_services
+ 
+@@ -131,10 +132,12 @@
+                 await self._async_close_assistant()
+                 credentials = Credentials(session.token[CONF_ACCESS_TOKEN])  # type: ignore[no-untyped-call]
+                 self.language = language
+-                self.assistant = TextAssistantAsync(credentials, self.language)
++                self.assistant = TextAssistantAsync(
++                    credentials, self.language, display=True
++                )
+ 
+             resp = await self.assistant.assist(user_input.text)
+-        text_response = resp[0] or "<empty response>"
++        text_response = parse_response(self.hass, user_input.text, resp)
+ 
+         intent_response = intent.IntentResponse(language=language)
+         intent_response.async_set_speech(text_response)
+--- a/custom_components/google_assistant_sdk_custom/helpers.py
++++ b/custom_components/google_assistant_sdk_custom/helpers.py
+@@ -7,6 +7,7 @@
+ import uuid
+ 
+ from aiohttp import web
++from bs4 import BeautifulSoup
+ from gassist_text import TextAssistantAsync
+ from google.oauth2.credentials import Credentials
+ from grpc import RpcError
+@@ -88,7 +89,7 @@
+     language_code = entry.options.get(CONF_LANGUAGE_CODE, default_language_code(hass))
+     command_response_list = []
+     async with TextAssistantAsync(
+-        credentials, language_code, audio_out=bool(media_players)
++        credentials, language_code, audio_out=bool(media_players), display=True
+     ) as assistant:
+         for command in commands:
+             try:
+@@ -102,7 +103,7 @@
+                 raise HomeAssistantError(
+                     translation_domain=DOMAIN, translation_key="grpc_error"
+                 ) from err
+-            text_response = resp[0]
++            text_response = parse_response(hass, command, resp)
+             _LOGGER.debug("command: %s\nresponse: %s", command, text_response)
+             audio_response = resp[2]
+             if media_players and audio_response:
+@@ -126,6 +127,23 @@
+     return command_response_list
+ 
+ 
++def parse_response(hass: HomeAssistant, command: str, resp):
++    """Parse a response from Google Assistant API Service and fires an event containing request and response."""
++    response = ""
++    if resp[0]:
++        response = resp[0]
++    elif resp[1]:
++        soup = BeautifulSoup(resp[1], "html.parser")
++        html = soup.find("div", id="assistant-card-content") or soup
++        response = html.get_text(separator="\n", strip=True)
++    event_data = {
++        "request": command,
++        "response": response,
++    }
++    hass.bus.async_fire(DOMAIN + "_event", event_data)
++    return response
++
++
+ def default_language_code(hass: HomeAssistant) -> str:
+     """Get default language code based on Home Assistant config."""
+     language_code = f"{hass.config.language}-{hass.config.country}"

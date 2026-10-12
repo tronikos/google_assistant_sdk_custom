@@ -1,17 +1,14 @@
 """Helper classes for Google Assistant SDK integration."""
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from http import HTTPStatus
 import logging
 from typing import Any
 import uuid
 
-import aiohttp
 from aiohttp import web
 from bs4 import BeautifulSoup
-from gassist_text import TextAssistant
+from gassist_text import TextAssistantAsync
 from google.oauth2.credentials import Credentials
 from grpc import RpcError
 
@@ -20,14 +17,18 @@ from homeassistant.components.media_player import (
     ATTR_MEDIA_ANNOUNCE,
     ATTR_MEDIA_CONTENT_ID,
     ATTR_MEDIA_CONTENT_TYPE,
-    DOMAIN as DOMAIN_MP,
+    DOMAIN as MP_DOMAIN,
     SERVICE_PLAY_MEDIA,
     MediaType,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_ENTITY_ID, CONF_ACCESS_TOKEN
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import HomeAssistantError
+from homeassistant.exceptions import (
+    HomeAssistantError,
+    OAuth2TokenRequestReauthError,
+    ServiceValidationError,
+)
 from homeassistant.helpers.config_entry_oauth2_flow import OAuth2Session
 from homeassistant.helpers.event import async_call_later
 
@@ -69,25 +70,30 @@ async def async_send_text_commands(
 ) -> list[CommandResponse]:
     """Send text commands to Google Assistant Service."""
     # There can only be 1 entry (config_flow has single_instance_allowed)
-    entry: GoogleAssistantSDKConfigEntry = hass.config_entries.async_entries(DOMAIN)[0]
+    entries = hass.config_entries.async_loaded_entries(DOMAIN)
+    if not entries:
+        raise ServiceValidationError(
+            translation_domain=DOMAIN,
+            translation_key="entry_not_loaded",
+        )
+    entry: GoogleAssistantSDKConfigEntry = entries[0]
 
     session = entry.runtime_data.session
     try:
         await session.async_ensure_token_valid()
-    except aiohttp.ClientResponseError as err:
-        if 400 <= err.status < 500:
-            entry.async_start_reauth(hass)
+    except OAuth2TokenRequestReauthError:
+        entry.async_start_reauth(hass)
         raise
 
     credentials = Credentials(session.token[CONF_ACCESS_TOKEN])  # type: ignore[no-untyped-call]
     language_code = entry.options.get(CONF_LANGUAGE_CODE, default_language_code(hass))
-    with TextAssistant(
+    command_response_list = []
+    async with TextAssistantAsync(
         credentials, language_code, audio_out=bool(media_players), display=True
     ) as assistant:
-        command_response_list = []
         for command in commands:
             try:
-                resp = await hass.async_add_executor_job(assistant.assist, command)
+                resp = await assistant.assist(command)
             except RpcError as err:
                 _LOGGER.error(
                     "Failed to send command '%s' to Google Assistant: %s",
@@ -107,7 +113,7 @@ async def async_send_text_commands(
                     )
                 )
                 await hass.services.async_call(
-                    DOMAIN_MP,
+                    MP_DOMAIN,
                     SERVICE_PLAY_MEDIA,
                     {
                         ATTR_ENTITY_ID: media_players,
@@ -118,7 +124,7 @@ async def async_send_text_commands(
                     blocking=True,
                 )
             command_response_list.append(CommandResponse(text_response))
-        return command_response_list
+    return command_response_list
 
 
 def parse_response(hass: HomeAssistant, command: str, resp):
@@ -128,9 +134,7 @@ def parse_response(hass: HomeAssistant, command: str, resp):
         response = resp[0]
     elif resp[1]:
         soup = BeautifulSoup(resp[1], "html.parser")
-        card_content = soup.find("div", id="assistant-card-content")
-        if card_content:
-            html = card_content
+        html = soup.find("div", id="assistant-card-content") or soup
         response = html.get_text(separator="\n", strip=True)
     event_data = {
         "request": command,
@@ -151,12 +155,16 @@ def default_language_code(hass: HomeAssistant) -> str:
 def best_matching_language_code(
     hass: HomeAssistant, assist_language: str, agent_language: str | None = None
 ) -> str:
-    """Get the best matching language, based on the preferred assist language and the configured agent language."""
+    """Get the best matching language.
+
+    Based on the preferred assist language and the configured
+    agent language.
+    """
 
     # Use the assist language if supported
     if assist_language in SUPPORTED_LANGUAGE_CODES:
         return assist_language
-    language = assist_language.split("-")[0]
+    language = assist_language.split("-", maxsplit=1)[0]
 
     # Use the agent language if assist and agent start with the same language part
     if agent_language is not None and agent_language.startswith(language):

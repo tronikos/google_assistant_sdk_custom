@@ -1,11 +1,7 @@
 {
     "config": {
         "abort": {
-            "missing_configuration": "Komponent nie jest skonfigurowany. Post\u0119puj zgodnie z dokumentacj\u0105.",
-            "oauth_error": "Otrzymano nieprawid\u0142owe dane tokena.",
-            "oauth_failed": "B\u0142\u0105d podczas uzyskiwania tokena dost\u0119pu.",
-            "oauth_timeout": "Przekroczono limit czasu rozpoznawania tokena OAuth.",
-            "oauth_unauthorized": "B\u0142\u0105d autoryzacji OAuth podczas uzyskiwania tokena dost\u0119pu."
+            "missing_configuration": "Komponent nie jest skonfigurowany. Post\u0119puj zgodnie z dokumentacj\u0105."
         },
         "create_entry": {
             "default": "Pomy\u015blnie uwierzytelniono"
@@ -14,13 +10,15 @@
             "auth": {
                 "title": "Po\u0142\u0105czenie z kontem Google"
             },
-            "pick_implementation": {
-                "title": "Wybierz metod\u0119 uwierzytelniania"
-            },
             "reauth_confirm": {
                 "description": "Integracja Google Assistant SDK wymaga ponownego uwierzytelnienia Twojego konta",
                 "title": "Autoryzacja wygas\u0142a dla {name}"
             }
+        }
+    },
+    "exceptions": {
+        "entry_not_loaded": {
+            "message": "Encja nie zosta\u0142a za\u0142adowana"
         }
     },
     "options": {

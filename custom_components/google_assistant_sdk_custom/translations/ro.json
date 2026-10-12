@@ -2,10 +2,7 @@
     "config": {
         "abort": {
             "already_configured": "Contul a fost configurat deja",
-            "already_in_progress": "Fluxul de configura\u021bie este deja \u00een desf\u0103\u0219urare",
-            "missing_configuration": "Componenta nu este configurat\u0103. Te rug\u0103m s\u0103 urmezi instruc\u021biunile din documenta\u021bie.",
-            "oauth_error": "Am primit date nevalide despre token.",
-            "reauth_successful": "Re-autentificarea s-a realizat cu succes"
+            "missing_configuration": "Componenta nu este configurat\u0103. Te rug\u0103m s\u0103 urmezi instruc\u021biunile din documenta\u021bie."
         },
         "create_entry": {
             "default": "Autentificare realizat\u0103 cu succes"
@@ -13,9 +10,6 @@
         "step": {
             "auth": {
                 "title": "Conectare Cont Google"
-            },
-            "pick_implementation": {
-                "title": "Alege metoda de autentificare"
             },
             "reauth_confirm": {
                 "description": "Integrarea Google Assistant SDK trebuie s\u0103 \u00ee\u021bi autentifice din nou contul",

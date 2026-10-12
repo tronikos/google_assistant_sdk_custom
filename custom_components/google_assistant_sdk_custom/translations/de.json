@@ -1,21 +1,11 @@
 {
     "application_credentials": {
-        "description": "Folge den [Anweisungen]({more_info_url}) f\u00fcr den [OAuth-Zustimmungsbildschirm]({oauth_consent_url}), um Home Assistant Zugriff auf dein Google Assistant SDK zu gew\u00e4hren. Du musst au\u00dferdem mit deinem Konto verkn\u00fcpfte OAuth-Anmeldedaten erstellen:\n1. Gehe zu [Anmeldedaten]({oauth_creds_url}) und w\u00e4hle **Anmeldedaten erstellen**.\n1. W\u00e4hle aus der Dropdown-Liste **OAuth-Client-ID** aus.\n1. W\u00e4hle **Webanwendung** als Anwendungstyp aus."
+        "description": "Folge den [Anweisungen]({more_info_url}) f\u00fcr den [OAuth-Zustimmungsbildschirm]({oauth_consent_url}), um Home Assistant Zugriff auf dein Google Assistant SDK zu gew\u00e4hren. Du musst au\u00dferdem mit deinem Konto verkn\u00fcpfte OAuth-Anmeldedaten erstellen:\n1. Gehe zu [Anmeldedaten]({oauth_creds_url}) und w\u00e4hle **Anmeldedaten erstellen**.\n1. W\u00e4hle aus der Dropdown-Liste **OAuth-Client-ID** aus.\n1. W\u00e4hle **Webanwendung** als Anwendungstyp aus.\n1. F\u00fcge `{redirect_url}` unter *Autorisierter Weiterleitungs-URI* hinzu."
     },
     "config": {
         "abort": {
             "already_configured": "Konto ist bereits konfiguriert",
-            "already_in_progress": "Konfigurationsablauf wird bereits ausgef\u00fchrt",
-            "authorize_url_timeout": "Zeit\u00fcberschreitung beim Erstellen der Autorisierungs-URL.",
-            "missing_configuration": "Die Komponente ist nicht konfiguriert. Bitte der Dokumentation folgen.",
-            "missing_credentials": "F\u00fcr die Integration sind OAuth-Anmeldedaten erforderlich.",
-            "no_url_available": "Keine URL verf\u00fcgbar. Informationen zu diesem Fehler [findest du im Hilfebereich]({docs_url}).",
-            "oauth_error": "Ung\u00fcltige Token-Daten empfangen.",
-            "oauth_failed": "Fehler beim Abrufen des Zugriffstokens.",
-            "oauth_timeout": "Zeit\u00fcberschreitung beim Aufl\u00f6sen des OAuth-Tokens.",
-            "oauth_unauthorized": "OAuth-Autorisierungsfehler beim Abrufen des Zugriffstokens.",
-            "reauth_successful": "Die erneute Authentifizierung war erfolgreich",
-            "user_rejected_authorize": "Kontoverkn\u00fcpfung abgelehnt: {error}"
+            "missing_configuration": "Die Komponente ist nicht konfiguriert. Bitte der Dokumentation folgen."
         },
         "create_entry": {
             "default": "Erfolgreich authentifiziert"
@@ -25,6 +15,12 @@
                 "title": "Google-Konto verkn\u00fcpfen"
             },
             "pick_implementation": {
+                "data": {
+                    "implementation": "OAuth-Anmeldedaten"
+                },
+                "data_description": {
+                    "implementation": "Die Anmeldedaten, die du zur Authentifizierung verwenden m\u00f6chtest."
+                },
                 "title": "Authentifizierungsmethode w\u00e4hlen"
             },
             "reauth_confirm": {
@@ -34,8 +30,11 @@
         }
     },
     "exceptions": {
+        "entry_not_loaded": {
+            "message": "Eintrag nicht geladen"
+        },
         "grpc_error": {
-            "message": "Kommunikation mit Google Assistant fehlgeschlagen"
+            "message": "Der Befehl `{command}` konnte nicht an Google Assistant gesendet werden"
         }
     },
     "options": {
@@ -43,6 +42,9 @@
             "init": {
                 "data": {
                     "language_code": "Sprachcode"
+                },
+                "data_description": {
+                    "language_code": "Sprache f\u00fcr die Anfragen und Antworten des Google Assistant SDK."
                 }
             }
         }
@@ -56,7 +58,7 @@
                     "name": "Befehl"
                 },
                 "media_player": {
-                    "description": "Namen der Mediaplayer-Entit\u00e4ten, auf denen die Antwort abgespielt werden soll.",
+                    "description": "Namen der Mediaplayer-Entit\u00e4ten, auf denen die Audioantwort von Google Assistant abgespielt werden soll. Dies bezieht sich nicht auf das Ger\u00e4t f\u00fcr den Befehl selbst.",
                     "name": "Mediaplayer-Entit\u00e4t"
                 }
             },

@@ -1,14 +1,11 @@
 {
+    "application_credentials": {
+        "description": "Suivez les [instructions]({more_info_url}) pour l'[\u00e9cran de consentement OAuth]({oauth_consent_url}) afin de donner \u00e0 Home Assistant l'acc\u00e8s \u00e0 votre SDK Google Assistant. Vous devez \u00e9galement cr\u00e9er des identifiants d'application li\u00e9s \u00e0 votre compte\u00a0:\n1. Acc\u00e9dez \u00e0 [Identifiants]({oauth_creds_url}) et s\u00e9lectionnez **Cr\u00e9er des identifiants**.\n1. Dans la liste d\u00e9roulante, s\u00e9lectionnez **ID client OAuth**.\n1. S\u00e9lectionnez **Application Web** comme type d'application.\n1. Ajoutez `{redirect_url}` sous *URI de redirection autoris\u00e9s*."
+    },
     "config": {
         "abort": {
             "already_configured": "Le compte est d\u00e9j\u00e0 configur\u00e9",
-            "already_in_progress": "La configuration est d\u00e9j\u00e0 en cours",
-            "missing_configuration": "Le composant n'est pas configur\u00e9. Veuillez suivre la documentation.",
-            "oauth_error": "Des donn\u00e9es de jeton non valides ont \u00e9t\u00e9 re\u00e7ues.",
-            "oauth_failed": "Erreur lors de l'obtention du jeton d'acc\u00e8s.",
-            "oauth_timeout": "D\u00e9lai d'expiration de la r\u00e9solution du jeton OAuth.",
-            "oauth_unauthorized": "Erreur d'autorisation OAuth lors de l'obtention du jeton d'acc\u00e8s.",
-            "reauth_successful": "La r\u00e9-authentification a r\u00e9ussi"
+            "missing_configuration": "Le composant n'est pas configur\u00e9. Veuillez suivre la documentation."
         },
         "create_entry": {
             "default": "Authentification r\u00e9ussie"
@@ -18,11 +15,23 @@
                 "title": "Associer un compte Google"
             },
             "pick_implementation": {
-                "title": "Choisissez la m\u00e9thode d'authentification"
+                "data": {
+                    "implementation": "Identifiants d'application"
+                },
+                "data_description": {
+                    "implementation": "Les identifiants que vous souhaitez utiliser pour vous authentifier."
+                },
+                "title": "Choisir la m\u00e9thode d'authentification"
             },
             "reauth_confirm": {
+                "description": "L'int\u00e9gration Google Assistant SDK doit r\u00e9authentifier votre compte",
                 "title": "L'authentification a expir\u00e9 pour {name}"
             }
+        }
+    },
+    "exceptions": {
+        "entry_not_loaded": {
+            "message": "Entr\u00e9e non charg\u00e9e"
         }
     },
     "options": {
@@ -30,8 +39,27 @@
             "init": {
                 "data": {
                     "language_code": "Code de langue"
+                },
+                "data_description": {
+                    "language_code": "Langue des requ\u00eates et r\u00e9ponses du SDK Google Assistant."
                 }
             }
+        }
+    },
+    "services": {
+        "send_text_command": {
+            "description": "Envoie une commande sous forme de requ\u00eate textuelle \u00e0 Google Assistant.",
+            "fields": {
+                "command": {
+                    "description": "Commande(s) \u00e0 envoyer \u00e0 Google Assistant.",
+                    "name": "Commande"
+                },
+                "media_player": {
+                    "description": "Nom(s) des entit\u00e9s de lecteur multim\u00e9dia sur lesquelles diffuser la r\u00e9ponse audio de Google Assistant. Cela ne cible pas l'appareil pour la commande elle-m\u00eame.",
+                    "name": "Entit\u00e9 du lecteur multim\u00e9dia"
+                }
+            },
+            "name": "Envoyer une commande textuelle"
         }
     }
 }

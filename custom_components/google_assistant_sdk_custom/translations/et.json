@@ -1,21 +1,11 @@
 {
     "application_credentials": {
-        "description": "J\u00e4rgi [juhiseid]( {more_info_url} ) [OAuthi n\u00f5usoleku ekraanil]( {oauth_consent_url} ), et anda Home Assistantile juurdep\u00e4\u00e4s Google'i assistendi SDK-le. Samuti pead looma oma kontoga lingitud rakenduse mandaadid:\n 1. Ava [Mandaat] ( {oauth_creds_url} ) ja kl\u00f5psa **Loo mandaadid**.\n 1. Vali ripploendist **OAuthi kliendi ID**.\n 1. Vali rakenduse t\u00fc\u00fcbiks **Veebirakendus**."
+        "description": "J\u00e4rgi [juhiseid]( {more_info_url} ) [OAuthi n\u00f5usoleku ekraanil]( {oauth_consent_url} ), et anda Home Assistantile juurdep\u00e4\u00e4s Google'i assistendi SDK-le. Samuti pead looma oma kontoga lingitud rakenduse mandaadid:\n 1. Ava [Mandaat] ( {oauth_creds_url} ) ja kl\u00f5psa **Loo mandaadid**.\n 1. Vali ripploendist **OAuthi kliendi ID**.\n 1. Vali rakenduse t\u00fc\u00fcbiks **Veebirakendus**.\n 1. Lisa `{redirect_url}` jaotises *Authorized redirect URI*."
     },
     "config": {
         "abort": {
             "already_configured": "Kasutaja on juba seadistatud",
-            "already_in_progress": "Seadistamine on juba k\u00e4imas",
-            "authorize_url_timeout": "Kinnitus-URLi loomise ajal\u00f5pp",
-            "missing_configuration": "Komponent pole seadistatud. Palun loe dokumentatsiooni.",
-            "missing_credentials": "Sidumine n\u00f5uab rakenduse volitusi.",
-            "no_url_available": "URL pole saadaval. Selle t\u00f5rke kohta teabe saamiseks vaata [spikrijaotis]({docs_url})",
-            "oauth_error": "Saadi sobimatud loaandmed.",
-            "oauth_failed": "T\u00f5rge juurdep\u00e4\u00e4sut\u00f5endi hankimisel.",
-            "oauth_timeout": "OAuthi loa lahendamise ajal\u00f5pp.",
-            "oauth_unauthorized": "OAuthi tuvastaimisviga juurdep\u00e4\u00e4sut\u00f5endi hankimisel.",
-            "reauth_successful": "Taastuvastamine \u00f5nnestus",
-            "user_rejected_authorize": "Konto sidumine nurjus: {error}"
+            "missing_configuration": "Komponent pole seadistatud. Palun loe dokumentatsiooni."
         },
         "create_entry": {
             "default": "Tuvastamine \u00f5nnestus"
@@ -25,6 +15,12 @@
                 "title": "Google'i konto linkimine"
             },
             "pick_implementation": {
+                "data": {
+                    "implementation": "Rakenduse volitused"
+                },
+                "data_description": {
+                    "implementation": "Tuvastamiseks kasutatavad volitused."
+                },
                 "title": "Vali tuvastusmeetod"
             },
             "reauth_confirm": {
@@ -34,8 +30,8 @@
         }
     },
     "exceptions": {
-        "grpc_error": {
-            "message": "Google Assistantiga suhtlemine nurjus"
+        "entry_not_loaded": {
+            "message": "Sissekanne pole laaditud"
         }
     },
     "options": {
@@ -43,6 +39,9 @@
             "init": {
                 "data": {
                     "language_code": "Keele kood"
+                },
+                "data_description": {
+                    "language_code": "Google Assistant SDK p\u00e4ringute ja vastuste keel."
                 }
             }
         }
@@ -56,7 +55,7 @@
                     "name": "K\u00e4sk"
                 },
                 "media_player": {
-                    "description": "Meediam\u00e4ngija olemite nimed, millel vastust esitada.",
+                    "description": "Google Assistant'i helivastuse esitamiseks kasutatavate meediam\u00e4ngijate nimi(ed). See ei ole suunatud k\u00e4su enda seadmele.",
                     "name": "Meediam\u00e4ngija olem"
                 }
             },

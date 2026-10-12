@@ -1,0 +1,42 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Kontua dagoeneko konfiguratuta dago"
+        },
+        "create_entry": {
+            "default": "Arrakastaz autentifikatua"
+        },
+        "step": {
+            "pick_implementation": {
+                "data": {
+                    "implementation": "Aplikazioaren kredentzialak"
+                }
+            },
+            "reauth_confirm": {
+                "title": "{name}-entzako autortza iraungi da"
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "language_code": "Hizkuntza-kodea"
+                },
+                "data_description": {
+                    "language_code": "Google Assistant SDK-en eskaera eta erantzunetarako hizkuntza"
+                }
+            }
+        }
+    },
+    "services": {
+        "send_text_command": {
+            "fields": {
+                "command": {
+                    "description": "Google Assistant-era bidaltzeko agindua(k)",
+                    "name": "Agindua"
+                }
+            }
+        }
+    }
+}

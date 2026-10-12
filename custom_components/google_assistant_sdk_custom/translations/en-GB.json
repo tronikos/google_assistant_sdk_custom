@@ -1,21 +1,11 @@
 {
     "application_credentials": {
-        "description": "Follow the [instructions]({more_info_url}) for [OAuth consent screen]({oauth_consent_url}) to give Home Assistant access to your Google Assistant SDK. You also need to create Application Credentials linked to your account:\n1. Go to [Credentials]({oauth_creds_url}) and select **Create Credentials**.\n1. From the drop-down list select **OAuth client ID**.\n1. Select **Web application** for the Application Type."
+        "description": "Follow the [instructions]({more_info_url}) for [OAuth consent screen]({oauth_consent_url}) to give Home Assistant access to your Google Assistant SDK. You also need to create Application Credentials linked to your account:\n1. Go to [Credentials]({oauth_creds_url}) and select **Create Credentials**.\n1. From the drop-down list select **OAuth client ID**.\n1. Select **Web application** for the Application Type.\n1. Add `{redirect_url}` under *Authorized redirect URI*."
     },
     "config": {
         "abort": {
             "already_configured": "Account is already configured",
-            "already_in_progress": "Configuration flow is already in progress",
-            "authorize_url_timeout": "Timeout generating authorise URL.",
-            "missing_configuration": "The component is not configured. Please follow the documentation.",
-            "missing_credentials": "The integration requires application credentials.",
-            "no_url_available": "No URL available. For information about this error, [check the help section]({docs_url})",
-            "oauth_error": "Received invalid token data.",
-            "oauth_failed": "Error while obtaining access token.",
-            "oauth_timeout": "Timeout resolving OAuth token.",
-            "oauth_unauthorized": "OAuth authorisation error while obtaining access token.",
-            "reauth_successful": "Re-authentication was successful",
-            "user_rejected_authorize": "Account linking rejected: {error}"
+            "missing_configuration": "The component is not configured. Please follow the documentation."
         },
         "create_entry": {
             "default": "Successfully authenticated"
@@ -25,6 +15,12 @@
                 "title": "Link Google Account"
             },
             "pick_implementation": {
+                "data": {
+                    "implementation": "Application credentials"
+                },
+                "data_description": {
+                    "implementation": "The credentials you want to use to authenticate."
+                },
                 "title": "Pick authentication method"
             },
             "reauth_confirm": {
@@ -33,11 +29,19 @@
             }
         }
     },
+    "exceptions": {
+        "entry_not_loaded": {
+            "message": "Entry not loaded"
+        }
+    },
     "options": {
         "step": {
             "init": {
                 "data": {
                     "language_code": "Language code"
+                },
+                "data_description": {
+                    "language_code": "Language for the Google Assistant SDK requests and responses."
                 }
             }
         }
@@ -51,7 +55,7 @@
                     "name": "Command"
                 },
                 "media_player": {
-                    "description": "Name(s) of media player entities to play response on.",
+                    "description": "Name(s) of media player entities to play the Google Assistant's audio response on. This does not target the device for the command itself.",
                     "name": "Media player entity"
                 }
             },

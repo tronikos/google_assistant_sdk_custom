@@ -1,11 +1,11 @@
 {
+    "application_credentials": {
+        "description": "F\u00f8lg [vejledningen]({more_info_url}) for [OAuth-samtykkesk\u00e6rmen]({oauth_consent_url}) for at give Home Assistant adgang til din Google Assistant SDK. Du skal desuden oprette Applikationsadgangskoder, der er knyttet til din konto:\n1. G\u00e5 til [Credentials]({oauth_creds_url}) og v\u00e6lg **Create credentials**.\n1. V\u00e6lg **OAuth client ID** fra rullelisten.\n1. V\u00e6lg **Web application** som applikationstype.\n1. Tilf\u00f8j `{redirect_url}` under *Authorized redirect URIs*."
+    },
     "config": {
         "abort": {
             "already_configured": "Kontoen er allerede konfigureret",
-            "already_in_progress": "Konfigurationsflow er allerede i gang",
-            "missing_configuration": "Komponenten er ikke konfigureret. F\u00f8lg venligst dokumentationen.",
-            "oauth_error": "Modtog ugyldige token-data.",
-            "reauth_successful": "Genautentificering lykkedes"
+            "missing_configuration": "Komponenten er ikke konfigureret. F\u00f8lg venligst dokumentationen."
         },
         "create_entry": {
             "default": "Godkendelse lykkedes"
@@ -15,6 +15,12 @@
                 "title": "Tilknyt Google-konto"
             },
             "pick_implementation": {
+                "data": {
+                    "implementation": "Applikationsadgangskoder"
+                },
+                "data_description": {
+                    "implementation": "De legitimationsoplysninger, du vil bruge til at logge ind."
+                },
                 "title": "V\u00e6lg godkendelsesmetode"
             },
             "reauth_confirm": {
@@ -28,8 +34,27 @@
             "init": {
                 "data": {
                     "language_code": "Sprogkode"
+                },
+                "data_description": {
+                    "language_code": "Sprog til Google Assistant SDK-anmodninger og -svar."
                 }
             }
+        }
+    },
+    "services": {
+        "send_text_command": {
+            "description": "Sender en kommando som en tekstforesp\u00f8rgsel til Google Assistant.",
+            "fields": {
+                "command": {
+                    "description": "Kommando(er), der skal sendes til Google Assistant.",
+                    "name": "Kommando"
+                },
+                "media_player": {
+                    "description": "Navn(e) p\u00e5 medieafspiller-entiteter, hvor Google Assistents lydsvar skal afspilles. Dette angiver ikke den enhed, som selve kommandoen skal rettes mod.",
+                    "name": "Medieafspiller-entitet"
+                }
+            },
+            "name": "Send tekstkommando"
         }
     }
 }

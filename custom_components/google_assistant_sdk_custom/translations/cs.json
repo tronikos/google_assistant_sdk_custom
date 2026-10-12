@@ -1,21 +1,11 @@
 {
     "application_credentials": {
-        "description": "Podle [pokyn\u016f]({more_info_url}) na [obrazovce souhlasu s OAuth]({oauth_consent_url}) ud\u011blte Home Assistantovi p\u0159\u00edstup k SDK Google Assistant. Mus\u00edte tak\u00e9 vytvo\u0159it p\u0159ihla\u0161ovac\u00ed \u00fadaje aplikace propojen\u00e9 s va\u0161\u00edm \u00fa\u010dtem:\n1. P\u0159ejd\u011bte na [Credentials]({oauth_creds_url}) a klepn\u011bte na **Create Credentials**.\n2. Z rozev\u00edrac\u00edho seznamu vyberte **OAuth client ID**.\n3. Jako Application Type vyberte **Web application**."
+        "description": "Podle [pokyn\u016f]({more_info_url}) na [obrazovce souhlasu s OAuth]({oauth_consent_url}) ud\u011blte Home Assistantovi p\u0159\u00edstup k SDK Google Assistant. Mus\u00edte tak\u00e9 vytvo\u0159it p\u0159ihla\u0161ovac\u00ed \u00fadaje aplikace propojen\u00e9 s va\u0161\u00edm \u00fa\u010dtem:\n1. P\u0159ejd\u011bte na [Credentials]({oauth_creds_url}) a klepn\u011bte na **Create Credentials**.\n2. Z rozev\u00edrac\u00edho seznamu vyberte **OAuth client ID**.\n3. Jako Application Type vyberte **Web application**.\n4. P\u0159idejte \"{redirect_url}\" v *Authoriued redirect URI*."
     },
     "config": {
         "abort": {
             "already_configured": "\u00da\u010det je ji\u017e nastaven",
-            "already_in_progress": "Nastaven\u00ed ji\u017e prob\u00edh\u00e1",
-            "authorize_url_timeout": "\u010casov\u00fd limit ov\u011b\u0159ovac\u00ed URL vypr\u0161el.",
-            "missing_configuration": "Komponenta nen\u00ed nastavena. Postupujte podle dokumentace.",
-            "missing_credentials": "Integrace vy\u017eaduje p\u0159ihla\u0161ovac\u00ed \u00fadaje aplikace.",
-            "no_url_available": "Nen\u00ed k dispozici \u017e\u00e1dn\u00e1 URL. Informace o t\u00e9to chyb\u011b naleznete [v sekci n\u00e1pov\u011bdy]({docs_url})",
-            "oauth_error": "P\u0159ijata neplatn\u00e1 data tokenu.",
-            "oauth_failed": "Chyba p\u0159i z\u00edsk\u00e1v\u00e1n\u00ed p\u0159\u00edstupov\u00e9ho tokenu.",
-            "oauth_timeout": "P\u0159i \u0159e\u0161en\u00ed tokenu OAuth vypr\u0161el \u010dasov\u00fd limit.",
-            "oauth_unauthorized": "Chyba autorizace OAuth p\u0159i z\u00edsk\u00e1v\u00e1n\u00ed p\u0159\u00edstupov\u00e9ho tokenu.",
-            "reauth_successful": "Op\u011btovn\u00e9 ov\u011b\u0159en\u00ed bylo \u00fasp\u011b\u0161n\u00e9",
-            "user_rejected_authorize": "Propojen\u00ed \u00fa\u010dtu zam\u00edtnuto: {error}"
+            "missing_configuration": "Komponenta nen\u00ed nastavena. Postupujte podle dokumentace."
         },
         "create_entry": {
             "default": "\u00dasp\u011b\u0161n\u011b ov\u011b\u0159eno"
@@ -25,6 +15,12 @@
                 "title": "Propojit \u00fa\u010det Google"
             },
             "pick_implementation": {
+                "data": {
+                    "implementation": "P\u0159ihla\u0161ovac\u00ed \u00fadaje aplikace"
+                },
+                "data_description": {
+                    "implementation": "P\u0159ihla\u0161ovac\u00ed \u00fadaje, kter\u00e9 chcete pou\u017e\u00edt k ov\u011b\u0159en\u00ed."
+                },
                 "title": "Vybrat metodu ov\u011b\u0159en\u00ed"
             },
             "reauth_confirm": {
@@ -34,8 +30,8 @@
         }
     },
     "exceptions": {
-        "grpc_error": {
-            "message": "Komunikace s Google Assistant se nezda\u0159ila"
+        "entry_not_loaded": {
+            "message": "Z\u00e1znam nebyl na\u010dten"
         }
     },
     "options": {
@@ -43,20 +39,23 @@
             "init": {
                 "data": {
                     "language_code": "K\u00f3d jazyka"
+                },
+                "data_description": {
+                    "language_code": "Jazyk pro po\u017eadavky a odpov\u011bdi Google Assistant SDK."
                 }
             }
         }
     },
     "services": {
         "send_text_command": {
-            "description": "Ode\u0161le p\u0159\u00edkaz jako textov\u00fd dotaz Asistentovi Google.",
+            "description": "Ode\u0161le p\u0159\u00edkaz jako textov\u00fd dotaz Google Assistantovi.",
             "fields": {
                 "command": {
-                    "description": "P\u0159\u00edkaz k odesl\u00e1n\u00ed Asistentovi Google.",
+                    "description": "P\u0159\u00edkaz k odesl\u00e1n\u00ed Google Assistantovi.",
                     "name": "P\u0159\u00edkaz"
                 },
                 "media_player": {
-                    "description": "N\u00e1zvy entit p\u0159ehr\u00e1va\u010de m\u00e9di\u00ed, na kter\u00fdch se m\u00e1 p\u0159ehr\u00e1t odpov\u011b\u010f.",
+                    "description": "N\u00e1zvy entit p\u0159ehr\u00e1va\u010d\u016f m\u00e9di\u00ed, na kter\u00fdch se m\u00e1 p\u0159ehr\u00e1t zvukov\u00e1 odpov\u011b\u010f Google Assistanta. Toto se net\u00fdk\u00e1 za\u0159\u00edzen\u00ed pro samotn\u00fd p\u0159\u00edkaz.",
                     "name": "Entita p\u0159ehr\u00e1va\u010de m\u00e9di\u00ed"
                 }
             },

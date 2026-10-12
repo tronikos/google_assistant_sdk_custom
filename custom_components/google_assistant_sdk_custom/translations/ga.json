@@ -1,7 +1,61 @@
 {
+    "application_credentials": {
+        "description": "Lean na [treoracha]({more_info_url}) le haghaidh [sc\u00e1ile\u00e1n toili\u00fa OAuth]({oauth_consent_url}) chun rochtain a thabhairt do Home Assistant ar do SDK Google Assistant. N\u00ed m\u00f3r duit Dinti\u00fair Feidhmchl\u00e1ir at\u00e1 nasctha le do chuntas a chruth\u00fa freisin:\n1. T\u00e9igh go [Dinti\u00fair]({oauth_creds_url}) agus roghnaigh **Cruthaigh Dinti\u00fair**.\n1. \u00d3n liosta anuas roghnaigh **ID cliant OAuth**.\n1. Roghnaigh **Feidhmchl\u00e1r Gr\u00e9as\u00e1in** don Chine\u00e1l Feidhmchl\u00e1ir.\n1. Cuir `{redirect_url}` leis faoi *URI atreoraithe \u00fadaraithe*."
+    },
+    "config": {
+        "abort": {
+            "already_configured": "T\u00e1 an cuntas cumraithe cheana f\u00e9in",
+            "missing_configuration": "N\u00edl an chomhph\u00e1irt cumraithe. Lean an doicim\u00e9ad\u00fa le do thoil."
+        },
+        "create_entry": {
+            "default": "F\u00edordheimhnithe go rath\u00fail"
+        },
+        "step": {
+            "auth": {
+                "title": "Nasc Cuntas Google"
+            },
+            "pick_implementation": {
+                "data_description": {
+                    "implementation": "Na dinti\u00fair is mian leat a \u00fas\u00e1id chun f\u00edordheimhni\u00fa."
+                },
+                "title": "Roghnaigh modh f\u00edordheimhnithe"
+            },
+            "reauth_confirm": {
+                "description": "Caithfidh comhth\u00e1th\u00fa SDK C\u00fant\u00f3ir Google d\u2019chuntas a athfh\u00edordheimhni\u00fa",
+                "title": "T\u00e1 an f\u00edordheimhni\u00fa imithe in \u00e9ag do {name}"
+            }
+        }
+    },
     "exceptions": {
-        "grpc_error": {
-            "message": "Theip ar chumars\u00e1id le C\u00fant\u00f3ir Google"
+        "entry_not_loaded": {
+            "message": "N\u00edor l\u00f3d\u00e1ileadh an iontr\u00e1il"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "language_code": "C\u00f3d teanga"
+                },
+                "data_description": {
+                    "language_code": "Teanga le haghaidh iarratais agus freagra\u00ed SDK C\u00fant\u00f3ir Google."
+                }
+            }
+        }
+    },
+    "services": {
+        "send_text_command": {
+            "description": "Seolann s\u00e9 ord\u00fa mar fhiosr\u00fach\u00e1n t\u00e9acs chuig C\u00fant\u00f3ir Google.",
+            "fields": {
+                "command": {
+                    "description": "Ord\u00fa(anna) le seoladh chuig C\u00fant\u00f3ir Google.",
+                    "name": "Ord\u00fa"
+                },
+                "media_player": {
+                    "name": "Eintiteas seinnteoir me\u00e1n"
+                }
+            },
+            "name": "Seol ord\u00fa t\u00e9acs"
         }
     }
 }

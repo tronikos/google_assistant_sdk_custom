@@ -1,0 +1,68 @@
+{
+    "application_credentials": {
+        "description": "Pratite [uputstva]({more_info_url}) za [OAuth ekran saglasnosti]({oauth_consent_url}) kako biste omogu\u0107ili Home Assistant\u2011u pristup va\u0161em Google Assistant SDK\u2011u.  \nTako\u0111e je potrebno da kreirate pristupne podatke aplikacije povezane sa va\u0161im nalogom:  \n1. Idite na [Pristupni podaci]({oauth_creds_url}) i izaberite **Kreiraj pristupne podatke**.  \n2. Sa padaju\u0107e liste izaberite **OAuth ID klijenta**.  \n3. Za tip aplikacije izaberite **Web aplikacija**.  \n4. Dodajte `{redirect_url}` pod *Dozvoljeni URI za preusmeravanje*."
+    },
+    "config": {
+        "abort": {
+            "already_configured": "Nalog je ve\u0107 pode\u0161en",
+            "missing_configuration": "Komponenta nije pode\u0161ena. Molimo pratite uputstva u dokumentaciji."
+        },
+        "create_entry": {
+            "default": "Uspe\u0161na prijava"
+        },
+        "step": {
+            "auth": {
+                "title": "Povezivanje Google naloga"
+            },
+            "pick_implementation": {
+                "data": {
+                    "implementation": "Pristupni podaci aplikacije"
+                },
+                "data_description": {
+                    "implementation": "Pristupni podaci koje \u017eelite da koristite za prijavu."
+                },
+                "title": "Izbor na\u010dina prijave"
+            },
+            "reauth_confirm": {
+                "description": "Google Assistant SDK integracija mora ponovo da prijavi va\u0161 nalog",
+                "title": "Prijava je istekla za {name}"
+            }
+        }
+    },
+    "exceptions": {
+        "entry_not_loaded": {
+            "message": "Unos nije u\u010ditan"
+        },
+        "grpc_error": {
+            "message": "Slanje komande `{command}` Google Assistant-u nije uspelo"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "language_code": "Jezi\u010dki kod"
+                },
+                "data_description": {
+                    "language_code": "Jezik za Google Assistant SDK zahteve i odgovore."
+                }
+            }
+        }
+    },
+    "services": {
+        "send_text_command": {
+            "description": "\u0160alje komandu kao tekstualni upit Google Asistentu.",
+            "fields": {
+                "command": {
+                    "description": "Komanda(e) za slanje Google Asistentu.",
+                    "name": "Komanda"
+                },
+                "media_player": {
+                    "description": "Naziv(i) entiteta medijskog plejera na kojima \u0107e se reprodukovati audio odgovor Google Asistenta. Ovo ne odre\u0111uje ure\u0111aj kojem je sama komanda namenjena.",
+                    "name": "Entitet medijskog plejera"
+                }
+            },
+            "name": "Po\u0161alji tekstualnu komandu"
+        }
+    }
+}

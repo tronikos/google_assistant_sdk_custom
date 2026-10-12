@@ -1,21 +1,11 @@
 {
     "application_credentials": {
-        "description": "Sledite [navodilom]({more_info_url}) za [zaslon za soglasje OAuth]({oauth_consent_url}), da Home Assistantu omogo\u010dite dostop do va\u0161ega SDK-ja za Googlovega pomo\u010dnika. Prav tako morate ustvariti poverilnice aplikacije, povezane z va\u0161im ra\u010dunom:\n1. Pojdite na [Poverilnice]({oauth_creds_url}) in izberite **Ustvari poverilnice**.\n1. Na spustnem seznamu izberite **ID odjemalca OAuth**.\n1. Za vrsto aplikacije izberite **Spletna aplikacija**."
+        "description": "Sledite [navodilom]({more_info_url}) za [zaslon za soglasje OAuth]({oauth_consent_url}), da Home Assistantu omogo\u010dite dostop do va\u0161ega SDK-ja za Googlovega pomo\u010dnika. Prav tako morate ustvariti poverilnice aplikacije, povezane z va\u0161im ra\u010dunom:\n1. Pojdite na [Poverilnice]({oauth_creds_url}) in izberite **Ustvari poverilnice**.\n1. Na spustnem seznamu izberite **ID odjemalca OAuth**.\n1. Za vrsto aplikacije izberite **Spletna aplikacija**.\n1. Pod *Poobla\u0161\u010deni URI za preusmeritev* dodajte `{redirect_url}`."
     },
     "config": {
         "abort": {
             "already_configured": "Ra\u010dun \u017ee nastavljen",
-            "already_in_progress": "Konfiguriranje \u017ee poteka",
-            "authorize_url_timeout": "\u010casovna omejitev za generiranje potrditvenega URL-ja je potekla.",
-            "missing_configuration": "Komponenta ni konfigurirana. Prosimo, upo\u0161tevajte dokumentacijo.",
-            "missing_credentials": "Integracija zahteva prijavne podatke.",
-            "no_url_available": "URL ni na voljo. Za informacije o tej napaki [preverite razdelek s pomo\u010djo]({docs_url})",
-            "oauth_error": "Prejeti neveljavni podatki \u017eetona.",
-            "oauth_failed": "Napaka pri pridobivanju dostopnega \u017eetona.",
-            "oauth_timeout": "\u010cas za razre\u0161itev \u017eetona OAuth je potekel",
-            "oauth_unauthorized": "Napaka avtorizacije OAuth pri pridobivanju \u017eetona za dostop.",
-            "reauth_successful": "Ponovna avtentikacija je bila uspe\u0161na",
-            "user_rejected_authorize": "Povezovanje z ra\u010dunom zavrnjeno: {error}"
+            "missing_configuration": "Komponenta ni konfigurirana. Prosimo, upo\u0161tevajte dokumentacijo."
         },
         "create_entry": {
             "default": "Uspe\u0161no preverjen"
@@ -51,7 +41,7 @@
                     "name": "Ukaz"
                 },
                 "media_player": {
-                    "description": "Imena entitet medijskega predvajalnika za predvajanje odgovora.",
+                    "description": "Ime(na) entitet predvajalnika predstavnosti za predvajanje zvo\u010dnega odgovora Pomo\u010dnika Google. To ne cilja na napravo za sam ukaz.",
                     "name": "Entiteta medijskega predvajalnika"
                 }
             },
