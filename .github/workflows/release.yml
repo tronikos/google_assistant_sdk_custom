@@ -10,9 +10,11 @@ jobs:
   release:
     name: "Release google_assistant_sdk_custom"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: "⬇️ Checkout the repository"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: "🔢 Adjust version number"
         shell: bash
@@ -29,6 +31,6 @@ jobs:
           cd "${{ github.workspace }}/custom_components/google_assistant_sdk_custom"
           zip google_assistant_sdk_custom.zip -r ./
       - name: "⬆️ Upload zip to release"
-        uses: softprops/action-gh-release@v0.1.15
+        uses: softprops/action-gh-release@v3
         with:
           files: ${{ github.workspace }}/custom_components/google_assistant_sdk_custom/google_assistant_sdk_custom.zip
