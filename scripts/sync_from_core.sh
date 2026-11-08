@@ -160,12 +160,11 @@ for key, value in upstream.items():
     elif key == "requirements":
         value = requirements
     manifest[key] = value
-    if key == "name":
-        manifest["version"] = "0.0.0"
-    elif key == "iot_class":
+    if key == "iot_class":
         manifest["issue_tracker"] = (
             "https://github.com/tronikos/google_assistant_sdk_custom/issues"
         )
+manifest["version"] = "0.0.0"
 
 # Same formatting as prettier: one key per line, short arrays inline.
 lines = [f"  {json.dumps(k)}: {json.dumps(v, ensure_ascii=False)}" for k, v in manifest.items()]
