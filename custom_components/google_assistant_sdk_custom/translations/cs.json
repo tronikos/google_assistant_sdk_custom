@@ -32,6 +32,9 @@
     "exceptions": {
         "entry_not_loaded": {
             "message": "Z\u00e1znam nebyl na\u010dten"
+        },
+        "grpc_error": {
+            "message": "Nepoda\u0159ilo se odeslat p\u0159\u00edkaz \"{command}\" do Asistenta Google"
         }
     },
     "options": {

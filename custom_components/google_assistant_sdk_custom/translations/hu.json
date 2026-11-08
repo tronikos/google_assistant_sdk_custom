@@ -5,7 +5,7 @@
     "config": {
         "abort": {
             "already_configured": "A fi\u00f3k m\u00e1r konfigur\u00e1lva van",
-            "missing_configuration": "A komponens nincs konfigur\u00e1lva. K\u00e9rem, k\u00f6vesse a dokument\u00e1ci\u00f3t."
+            "missing_configuration": "A komponens nincs konfigur\u00e1lva. K\u00e9rj\u00fck, k\u00f6vesse a dokument\u00e1ci\u00f3t."
         },
         "create_entry": {
             "default": "Sikeres hiteles\u00edt\u00e9s"
@@ -32,6 +32,9 @@
     "exceptions": {
         "entry_not_loaded": {
             "message": "A bejegyz\u00e9s nem lett bet\u00f6ltve"
+        },
+        "grpc_error": {
+            "message": "Nem siker\u00fclt elk\u00fcldeni a(z) `{command}` parancsot a Google Seg\u00e9dnek"
         }
     },
     "options": {

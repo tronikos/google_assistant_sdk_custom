@@ -1,0 +1,68 @@
+{
+    "application_credentials": {
+        "description": "Segue as [instruci\u00f3ns]({more_info_url}) da [pantalla de consentimento de OAuth]({oauth_consent_url}) para darlle a Home Assistant acceso ao teu Google Assistant SDK. Tam\u00e9n tes que crear credenciais de aplicaci\u00f3n vinculadas \u00e1 t\u00faa conta:\n1. Vai a [Credenciais]({oauth_creds_url}) e selecciona **Crear credenciais**.\n1. Na lista despregable selecciona **ID de cliente OAuth**.\n1. Selecciona **Aplicaci\u00f3n web** como tipo de aplicaci\u00f3n.\n1. Engade `{redirect_url}` en *URI de redirecci\u00f3n autorizados*."
+    },
+    "config": {
+        "abort": {
+            "already_configured": "A conta xa est\u00e1 configurada",
+            "missing_configuration": "O compo\u00f1ente non est\u00e1 configurado. Segue a documentaci\u00f3n."
+        },
+        "create_entry": {
+            "default": "Autenticado correctamente"
+        },
+        "step": {
+            "auth": {
+                "title": "Vincular a conta de Google"
+            },
+            "pick_implementation": {
+                "data": {
+                    "implementation": "Credenciais da aplicaci\u00f3n"
+                },
+                "data_description": {
+                    "implementation": "As credenciais que queres usar para autenticarte."
+                },
+                "title": "Escoller o m\u00e9todo de autenticaci\u00f3n"
+            },
+            "reauth_confirm": {
+                "description": "A integraci\u00f3n Google Assistant SDK ten que volver autenticar a t\u00faa conta",
+                "title": "A autenticaci\u00f3n caducou para {name}"
+            }
+        }
+    },
+    "exceptions": {
+        "entry_not_loaded": {
+            "message": "Entrada non cargada"
+        },
+        "grpc_error": {
+            "message": "Erro ao enviar a orde `{command}` a Google Assistant"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "language_code": "C\u00f3digo de idioma"
+                },
+                "data_description": {
+                    "language_code": "Idioma das solicitudes e respostas de Google Assistant SDK."
+                }
+            }
+        }
+    },
+    "services": {
+        "send_text_command": {
+            "description": "Env\u00eda unha orde como consulta de texto a Google Assistant.",
+            "fields": {
+                "command": {
+                    "description": "Orde(s) que enviar a Google Assistant.",
+                    "name": "Orde"
+                },
+                "media_player": {
+                    "description": "Nome(s) das entidades de reprodutor multimedia nas que reproducir a resposta de audio de Google Assistant. Isto non indica o dispositivo destinatario da propia orde.",
+                    "name": "Entidade de reprodutor multimedia"
+                }
+            },
+            "name": "Enviar unha orde de texto"
+        }
+    }
+}

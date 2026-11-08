@@ -32,6 +32,9 @@
     "exceptions": {
         "entry_not_loaded": {
             "message": "\u30a8\u30f3\u30c8\u30ea\u304c\u8aad\u307f\u8fbc\u307e\u308c\u3066\u3044\u307e\u305b\u3093"
+        },
+        "grpc_error": {
+            "message": "Google \u30a2\u30b7\u30b9\u30bf\u30f3\u30c8\u3078\u306e\u30b3\u30de\u30f3\u30c9\u300c{command} \u300d\u306e\u9001\u4fe1\u306b\u5931\u6557\u3057\u307e\u3057\u305f"
         }
     },
     "options": {

@@ -1,6 +1,6 @@
 --- a/custom_components/google_assistant_sdk_custom/__init__.py
 +++ b/custom_components/google_assistant_sdk_custom/__init__.py
-@@ -23,6 +23,7 @@
+@@ -23,6 +23,7 @@ from .helpers import (
      GoogleAssistantSDKRuntimeData,
      InMemoryStorage,
      best_matching_language_code,
@@ -8,7 +8,7 @@
  )
  from .services import async_setup_services
  
-@@ -131,10 +132,12 @@
+@@ -127,10 +128,14 @@ class GoogleAssistantConversationAgent(conversation.AbstractConversationAgent):
                  await self._async_close_assistant()
                  credentials = Credentials(session.token[CONF_ACCESS_TOKEN])  # type: ignore[no-untyped-call]
                  self.language = language
@@ -19,13 +19,15 @@
  
              resp = await self.assistant.assist(user_input.text)
 -        text_response = resp[0] or "<empty response>"
-+        text_response = parse_response(self.hass, user_input.text, resp)
++        text_response = (
++            parse_response(self.hass, user_input.text, resp) or "<empty response>"
++        )
  
          intent_response = intent.IntentResponse(language=language)
          intent_response.async_set_speech(text_response)
 --- a/custom_components/google_assistant_sdk_custom/helpers.py
 +++ b/custom_components/google_assistant_sdk_custom/helpers.py
-@@ -7,6 +7,7 @@
+@@ -7,6 +7,7 @@ from typing import Any
  import uuid
  
  from aiohttp import web
@@ -33,7 +35,7 @@
  from gassist_text import TextAssistantAsync
  from google.oauth2.credentials import Credentials
  from grpc import RpcError
-@@ -88,7 +89,7 @@
+@@ -86,7 +87,7 @@ async def async_send_text_commands(
      language_code = entry.options.get(CONF_LANGUAGE_CODE, default_language_code(hass))
      command_response_list = []
      async with TextAssistantAsync(
@@ -42,16 +44,16 @@
      ) as assistant:
          for command in commands:
              try:
-@@ -102,7 +103,7 @@
-                 raise HomeAssistantError(
-                     translation_domain=DOMAIN, translation_key="grpc_error"
+@@ -97,7 +98,7 @@ async def async_send_text_commands(
+                     translation_key="grpc_error",
+                     translation_placeholders={"command": command},
                  ) from err
 -            text_response = resp[0]
 +            text_response = parse_response(hass, command, resp)
              _LOGGER.debug("command: %s\nresponse: %s", command, text_response)
              audio_response = resp[2]
              if media_players and audio_response:
-@@ -126,6 +127,23 @@
+@@ -121,6 +122,23 @@ async def async_send_text_commands(
      return command_response_list
  
  
@@ -75,3 +77,14 @@
  def default_language_code(hass: HomeAssistant) -> str:
      """Get default language code based on Home Assistant config."""
      language_code = f"{hass.config.language}-{hass.config.country}"
+@@ -194,8 +212,8 @@ class GoogleAssistantSDKAudioView(HomeAssistantView):
+     """Google Assistant SDK view to serve audio responses."""
+ 
+     requires_auth = True
+-    url = "/api/google_assistant_sdk/audio/{filename}"
+-    name = "api:google_assistant_sdk:audio"
++    url = f"/api/{DOMAIN}/audio/{{filename}}"
++    name = f"api:{DOMAIN}:audio"
+ 
+     def __init__(self, mem_storage: InMemoryStorage) -> None:
+         """Initialize GoogleAssistantSDKView."""

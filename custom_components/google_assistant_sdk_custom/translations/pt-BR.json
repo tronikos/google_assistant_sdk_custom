@@ -2,7 +2,7 @@
     "config": {
         "abort": {
             "already_configured": "A conta j\u00e1 est\u00e1 configurada",
-            "missing_configuration": "O componente n\u00e3o est\u00e1 configurado. Por favor, siga a documenta\u00e7\u00e3o."
+            "missing_configuration": "O componente n\u00e3o est\u00e1 configurado. Siga a documenta\u00e7\u00e3o."
         },
         "create_entry": {
             "default": "Autenticado com sucesso"
